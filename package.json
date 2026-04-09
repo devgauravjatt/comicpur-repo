@@ -1,0 +1,21 @@
+{
+  "name": "comicpur-web-repo",
+  "private": true,
+  "scripts": {
+    "build": "pnpm -r run build",
+    "dev": "pnpm -r run dev",
+    "start": "pnpm -r run start",
+    "lint": "pnpm -r run lint",
+    "format": "pnpm -r run format && pnpm oxfmt .",
+    "check-types": "pnpm -r run check-types",
+    "copy-types": "tsx copy.ts"
+  },
+  "devDependencies": {
+    "oxfmt": "^0.44.0",
+    "tsx": "^4.21.0"
+  },
+  "packageManager": "pnpm@10.33.0",
+  "engines": {
+    "node": ">=18"
+  }
+}
