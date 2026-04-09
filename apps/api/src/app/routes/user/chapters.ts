@@ -35,15 +35,32 @@ const chaptersReadRouter = new Hono<{ Variables: Variables }>().get(
 		const isPro = await premiumService.checkPremiumSubscription(userId);
 
 		if (isPro) {
-			return c.json({ success: true, data: chapter });
+			return c.json({
+				success: true,
+				data: {
+					chapter: chapter,
+				},
+			});
 		}
 
 		const limit = await readLimitService.checkLimitAndRead(userId, chap);
 
 		if (limit.allowed) {
-			return c.json({ success: true, data: chapter, limitInfo: limit });
+			return c.json({
+				success: true,
+				data: {
+					chapter: chapter,
+					limitInfo: limit,
+				},
+			});
 		}
-		return c.json({ success: true, limitInfo: limit });
+		return c.json({
+			success: true,
+			data: {
+				chapter: null,
+				limitInfo: limit,
+			},
+		});
 	},
 );
 
