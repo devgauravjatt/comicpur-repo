@@ -100,7 +100,7 @@ export const ChaptersService = {
 		const res = await db
 			.select()
 			.from(chaptersTable)
-			.where(and(eq(chaptersTable.comicId, comicId), eq(chaptersTable.id, chapterId)));
+			.where(and(eq(chaptersTable.comicId, comicId), eq(chaptersTable.chapterNumber, chapterId)));
 
 		return res[0];
 	},
