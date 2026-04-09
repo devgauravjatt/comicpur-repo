@@ -39,6 +39,7 @@ const chaptersReadRouter = new Hono<{ Variables: Variables }>().get(
 				success: true,
 				data: {
 					chapter: chapter,
+					limitInfo: null,
 				},
 			});
 		}

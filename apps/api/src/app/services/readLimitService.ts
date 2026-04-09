@@ -22,7 +22,7 @@ export const readLimitService = {
 			.from(userDailyReadsTable)
 			.where(and(eq(userDailyReadsTable.userId, userId), eq(userDailyReadsTable.readDate, today)));
 
-		return count;
+		return Number(count);
 	},
 
 	// 🔁 Check already read today
