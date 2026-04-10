@@ -12,12 +12,13 @@ export const ChaptersService = {
 	// check if chapter number already exists for a comic
 	async checkChapterNumberExists(comicId: number, chapterNumber: number) {
 		const result = await db
-			.select({ count: count() })
+			.select()
 			.from(chaptersTable)
 			.where(
 				and(eq(chaptersTable.comicId, comicId), eq(chaptersTable.chapterNumber, chapterNumber)),
 			);
-		return result[0].count > 0;
+		console.log('🚀 ~ result :- ', result.length);
+		return result.length > 0;
 	},
 	// count chapters by comic id
 	async countChaptersByComicId(comicId: number) {
@@ -40,14 +41,28 @@ export const ChaptersService = {
 	// add chapter
 	async addChapter(body: addChaptersSchema) {
 		try {
-			await db.insert(chaptersTable).values(body);
+			const result = await db
+				.insert(chaptersTable)
+				.values(body)
+				.onConflictDoNothing({
+					target: [chaptersTable.comicId, chaptersTable.chapterNumber],
+				})
+				.returning();
+
+			const inserted = result.length > 0;
+
+			if (!inserted) return true;
+
 			const count = await this.countChaptersByComicId(body.comicId);
+
 			await ComicsService.updateComic({
 				id: body.comicId,
 				chaptersCount: count,
 			});
+			return false;
 		} catch (error) {
 			console.log('🚀 ~ error :- ', error);
+			return false;
 		}
 	},
 	// update chapter

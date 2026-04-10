@@ -3,7 +3,6 @@ import Image from 'next/image';
 import { Comic } from '@/types/comic';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import CustomImage from './CustomImage';
 import { BookOpen, Star, Calendar } from 'lucide-react';
 
 import { IsNewBadge } from './is-new-badge';
@@ -17,31 +16,13 @@ export function ComicCard({ comic }: ComicCardProps) {
     <Link href={`/comic/${comic.slug}`} className="block group">
       <Card className="h-full border-none shadow-none bg-transparent hover:bg-accent/10 transition-all duration-300 overflow-hidden">
         <div className="relative aspect-3/4 overflow-hidden rounded-2xl shadow-sm group-hover:shadow-md transition-shadow">
-          <CustomImage
+          <Image
             src={comic.coverImage}
             alt={comic.title}
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-110"
             sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 20vw"
           />
-
-          {comic.coverImage.includes('webtoon-phinf.pstatic.net') ? (
-            <CustomImage
-              src={comic.coverImage}
-              alt={comic.title}
-              fill
-              className="object-cover transition-transform duration-500 group-hover:scale-110"
-              sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 20vw"
-            />
-          ) : (
-            <Image
-              src={comic.coverImage}
-              alt={comic.title}
-              fill
-              className="object-cover transition-transform duration-500 group-hover:scale-110"
-              sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 20vw"
-            />
-          )}
 
           {/* Overlay on hover */}
           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3 text-white">

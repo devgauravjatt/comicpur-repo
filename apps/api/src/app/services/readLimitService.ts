@@ -92,7 +92,6 @@ export const readLimitService = {
 				reason: 'race_duplicate',
 				remaining: Math.max(0, DEFAULT_LIMIT - count),
 				waitTime: 0,
-
 			};
 		}
 

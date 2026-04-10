@@ -1,4 +1,13 @@
-import { boolean, date, integer, pgTable, serial, text, varchar } from 'drizzle-orm/pg-core';
+import {
+	boolean,
+	date,
+	integer,
+	pgTable,
+	serial,
+	text,
+	uniqueIndex,
+	varchar,
+} from 'drizzle-orm/pg-core';
 
 export const usersTable = pgTable('users', {
 	id: integer().primaryKey().generatedAlwaysAsIdentity(),
@@ -35,22 +44,26 @@ export const comicsTable = pgTable('comics', {
 	chaptersCount: integer('chapters_count').default(0).notNull(),
 	languageCode: text('language_code').notNull(),
 	isAdult: boolean('is_adult').default(false).notNull(),
-	categoryId: integer('category_id')
-		.references(() => categoriesTable.id)
-		.notNull(),
+	categoryIds: integer('category_ids').array().notNull(),
 	createdAt: date('created_at', { mode: 'date' }).defaultNow().notNull(),
 	updatedAt: date('updated_at', { mode: 'date' }).defaultNow().notNull(),
 });
 
-export const chaptersTable = pgTable('chapters', {
-	id: integer().primaryKey().generatedAlwaysAsIdentity(),
-	comicId: integer('comic_id')
-		.references(() => comicsTable.id)
-		.notNull(),
-	chapterNumber: integer('chapter_number').notNull(),
-	title: text('title').notNull(),
-	images: text('images').array().notNull(),
-});
+export const chaptersTable = pgTable(
+	'chapters',
+	{
+		id: integer().primaryKey().generatedAlwaysAsIdentity(),
+		comicId: integer('comic_id')
+			.references(() => comicsTable.id)
+			.notNull(),
+		chapterNumber: integer('chapter_number').notNull(),
+		title: text('title').notNull(),
+		images: text('images').array().notNull(),
+	},
+	(table) => ({
+		chapterUniqueIdx: uniqueIndex('chapter_unique_idx').on(table.comicId, table.chapterNumber),
+	}),
+);
 
 export const userDailyReadsTable = pgTable('user_daily_reads', {
 	id: serial('id').primaryKey(),

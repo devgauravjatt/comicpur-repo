@@ -32,7 +32,7 @@ export const CategoriesService = {
 		const result = await db
 			.select({ count: sql<number>`cast(count(*) as int)` })
 			.from(comicsTable)
-			.where(eq(comicsTable.categoryId, id));
+			.where(sql`${id} = ANY(${comicsTable.categoryIds})`);
 		const count = Number(result[0]?.count ?? 0);
 		return count === 0;
 	},

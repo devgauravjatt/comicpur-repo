@@ -6,11 +6,9 @@ import { Separator } from '@/components/ui/separator';
 import { BookOpen, Calendar, Heart, Share2, Star, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import CustomImage from '@/components/CustomImage';
+import Image from 'next/image';
 
 async function getComicDetail(slug: string) {
-  // wait 5s
-  await new Promise((resolve) => setTimeout(resolve, 5000));
   try {
     const response = await honoClient.api.v1.public.comics
       .$get({
@@ -29,6 +27,7 @@ async function getComicDetail(slug: string) {
 export default async function ComicPage({ params }: { params: { slug: string } }) {
   const { slug } = await params;
   const comicData = await getComicDetail(slug);
+  console.log('🚀 ~ ComicPage ~ comicData :- ', comicData);
 
   if (!comicData) {
     notFound();
@@ -41,7 +40,7 @@ export default async function ComicPage({ params }: { params: { slug: string } }
         <div className="flex flex-col md:flex-row gap-6 md:gap-10">
           {/* Cover Image */}
           <div className="relative aspect-3/4 w-full max-w-60 mx-auto md:mx-0 shrink-0 overflow-hidden rounded-2xl shadow-xl">
-            <CustomImage
+            <Image
               src={comicData.comic.coverImage}
               alt={comicData.comic.title}
               fill

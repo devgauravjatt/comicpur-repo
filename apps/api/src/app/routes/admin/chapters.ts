@@ -22,15 +22,11 @@ chaptersRouter.get('/count/last/:comicId', async (c) => {
 chaptersRouter.post('/', reqValidator('json', addChaptersBodySchema, true), async (c) => {
 	const body = c.req.valid('json');
 
-	const chapterNumberIsExist = await ChaptersService.checkChapterNumberExists(
-		body.comicId,
-		body.chapterNumber,
-	);
+	const chapterNumberIsExist = await ChaptersService.addChapter(body);
+
 	if (chapterNumberIsExist) {
 		return c.json({ success: false, error: 'Chapter number already exist' }, 400);
 	}
-
-	await ChaptersService.addChapter(body);
 
 	return c.json({ success: true, message: 'Chapter added successfully' });
 });
