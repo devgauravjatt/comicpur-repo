@@ -62,7 +62,6 @@ export const readLimitService = {
 				reason: 'already_read',
 				remaining: Math.max(0, DEFAULT_LIMIT - count),
 				waitTime: 0,
-				resetAt: 0,
 			};
 		}
 
@@ -75,7 +74,6 @@ export const readLimitService = {
 				reason: 'limit_reached',
 				remaining: 0,
 				waitTime: dateHelper.getWaitTimeNextMidnight(),
-				resetAt: dateHelper.getNextMidnight(),
 			};
 		}
 
@@ -94,7 +92,7 @@ export const readLimitService = {
 				reason: 'race_duplicate',
 				remaining: Math.max(0, DEFAULT_LIMIT - count),
 				waitTime: 0,
-				resetAt: 0,
+
 			};
 		}
 
@@ -103,7 +101,6 @@ export const readLimitService = {
 			reason: 'new_read',
 			remaining: DEFAULT_LIMIT - (count + 1),
 			waitTime: 0,
-			resetAt: 0,
 		};
 	},
 };
