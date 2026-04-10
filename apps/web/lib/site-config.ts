@@ -8,6 +8,14 @@ const meta = {
   keywords: ['comicpur', 'comics', 'comic book', 'comic book lovers'],
 };
 
+const contact = {
+  email: 'contact@comicpur.com',
+  phone: '+1234567890',
+  telegram: 'https://t.me/yourtelegramhandle',
+  whatsapp: 'https://wa.me/yourwhatsapplink',
+};
+
 export const siteConfig = {
   meta,
+  contact,
 };

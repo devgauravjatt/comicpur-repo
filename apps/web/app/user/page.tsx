@@ -7,6 +7,8 @@ import honoClient from '@/hono/client';
 import { siteConfig } from '@/lib/site-config';
 import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: siteConfig.meta.name + ' - User Profile',
@@ -141,6 +143,9 @@ export default async function Page() {
                   <p className="text-sm font-medium">No Active Subscription</p>
                   <p className="text-xs text-muted-foreground">Upgrade to Premium to access all features.</p>
                 </div>
+                <Button asChild size="sm" className="mt-2 rounded-xl">
+                  <Link href="/plan">View Plans</Link>
+                </Button>
               </div>
             )}
           </CardContent>
