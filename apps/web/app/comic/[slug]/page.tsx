@@ -68,7 +68,7 @@ export default async function ComicPage({ params }: { params: { slug: string } }
               </Badge>
             </div>
 
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-black comicpur-text-gradient py-2 tracking-tight leading-tight">
               {comicData.comic.title}
             </h1>
 
@@ -112,7 +112,7 @@ export default async function ComicPage({ params }: { params: { slug: string } }
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 mt-6 md:mt-8">
-              <Link href={`/comic/${comicData.comic.slug}/chapter-1`} className="flex-1">
+              <Link href={`/comic/${comicData.comic.slug}/1`} className="flex-1">
                 <Button
                   size="lg"
                   className="w-full rounded-full h-12 md:h-14 text-base font-bold shadow-lg shadow-primary/20"
