@@ -1,7 +1,6 @@
 import { CreditCardIcon, LogOutIcon, SettingsIcon, UserIcon } from 'lucide-react';
 import Link from 'next/link';
 import type { ReactNode } from 'react';
-import { ModeToggle } from '@/components/toggle-theme';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
@@ -69,14 +68,6 @@ const ProfileDropdown = ({ trigger, defaultOpen, align = 'end', user }: Props) =
               <span>Subscription</span>
             </DropdownMenuItem>
           </Link>
-        </DropdownMenuGroup>
-
-        <DropdownMenuSeparator />
-
-        <DropdownMenuGroup>
-          <DropdownMenuItem className="px-4 py-2.5 text-base">
-            <ModeToggle />
-          </DropdownMenuItem>
         </DropdownMenuGroup>
 
         <DropdownMenuSeparator />

@@ -3,7 +3,6 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import './globals.css';
 import Header from '@/components/header';
 import '@fontsource-variable/merriweather/standard.css';
-import { ThemeProvider } from '@/components/theme-provider';
 import honoClient from '@/hono/client';
 import { Footer } from '@/components/footer';
 import { BottomNav } from '@/components/bottom-nav';
@@ -81,25 +80,23 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={` antialiased flex min-h-dvh w-full`}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <TooltipProvider>
-            <div className="flex flex-1 flex-col">
-              <Suspense fallback={<Header user={null} />}>
-                <HeaderWithUser />
-              </Suspense>
-              <main className="mx-auto size-full max-w-7xl flex-1 px-4 py-6 sm:px-6">
-                <div className="h-full">{children}</div>
-              </main>
-              <div className="w-full">
-                <Footer />
-              </div>
-            </div>
-            <Suspense fallback={<NavLoding />}>
-              <BottomNav />
+      <body className={` antialiased flex min-h-dvh w-full dark`}>
+        <TooltipProvider>
+          <div className="flex flex-1 flex-col">
+            <Suspense fallback={<Header user={null} />}>
+              <HeaderWithUser />
             </Suspense>
-          </TooltipProvider>
-        </ThemeProvider>
+            <main className="mx-auto size-full max-w-7xl flex-1 px-4 py-6 sm:px-6">
+              <div className="h-full">{children}</div>
+            </main>
+            <div className="w-full">
+              <Footer />
+            </div>
+          </div>
+          <Suspense fallback={<NavLoding />}>
+            <BottomNav />
+          </Suspense>
+        </TooltipProvider>
       </body>
     </html>
   );
