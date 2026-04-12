@@ -57,9 +57,7 @@ function UnauthorizedCard() {
   );
 }
 
-function LimitReachedCard({ slug, limitInfo }: { slug: string; limitInfo: LimitInfoType }) {
-  const isFullLimit = limitInfo.reason === 'limit_reached';
-
+function LimitReachedCard({ limitInfo }: { slug: string; limitInfo: LimitInfoType }) {
   return (
     <div className="flex min-h-[80vh] flex-col items-center justify-center p-4 text-center">
       <div className="relative w-full max-w-md overflow-hidden">
@@ -82,14 +80,10 @@ function LimitReachedCard({ slug, limitInfo }: { slug: string; limitInfo: LimitI
             </div>
           </div>
 
-          <h2 className="mb-4 text-2xl font-black tracking-tight text-destructive">
-            {isFullLimit ? 'Daily Reading Limit' : 'Access Restricted'}
-          </h2>
+          <h2 className="mb-4 text-2xl font-black tracking-tight text-destructive">Daily Reading Limit</h2>
 
           <p className="text-muted-foreground mb-8 px-2 text-sm leading-relaxed">
-            {isFullLimit
-              ? "You've exhausted your free daily chapters. Unlock Pro to read unlimited chapters right now!"
-              : limitInfo.reason}
+            You&apos;ve exhausted your free daily chapters. Unlock Pro to read unlimited chapters right now!
           </p>
 
           <div className="mb-8 flex justify-center">
@@ -115,29 +109,6 @@ function LimitReachedCard({ slug, limitInfo }: { slug: string; limitInfo: LimitI
                 Unlock Unlimited with Pro
               </Link>
             </Button>
-
-            <div className="grid grid-cols-2 gap-3">
-              <Button
-                asChild
-                variant="outline"
-                className="h-12 border-border text-sm font-semibold hover:bg-accent rounded-2xl"
-              >
-                <Link href={`/comic/${slug}`}>
-                  <ChevronLeft className="mr-1.5 size-4" />
-                  Comic Info
-                </Link>
-              </Button>
-              <Button
-                asChild
-                variant="outline"
-                className="h-12 border-border text-sm font-semibold hover:bg-accent rounded-2xl"
-              >
-                <Link href="/">
-                  <Home className="mr-1.5 size-4" />
-                  Browse More
-                </Link>
-              </Button>
-            </div>
           </div>
 
           <p className="mt-8 text-[11px] text-muted-foreground/60">
@@ -149,7 +120,7 @@ function LimitReachedCard({ slug, limitInfo }: { slug: string; limitInfo: LimitI
   );
 }
 
-function ChapterHeader({ title, slug }: { title: string; slug: string }) {
+function ChapterHeader({ title, slug, chapterId }: { title: string; slug: string; chapterId: number }) {
   return (
     <header className="bg-background/80 sticky top-0 z-40 border-b backdrop-blur-sm">
       <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-2">
@@ -158,7 +129,9 @@ function ChapterHeader({ title, slug }: { title: string; slug: string }) {
             <ChevronLeft className="size-6" />
           </Link>
         </Button>
-        <h1 className="mx-4 flex-1 truncate text-center text-sm font-semibold md:text-base">{title}</h1>
+        <h1 className="mx-4 flex-1 truncate text-center text-sm font-semibold md:text-base">
+          {title} | Chapter - {chapterId}
+        </h1>
         <Button asChild variant="ghost" size="icon" className="size-11 rounded-full">
           <Link href="/">
             <Home className="size-6" />
@@ -172,13 +145,14 @@ function ChapterHeader({ title, slug }: { title: string; slug: string }) {
 function ReadingLimitOverlay({ limitInfo }: { limitInfo: LimitInfoType }) {
   const isLow = limitInfo.remaining <= 2;
   const isFull = limitInfo.remaining === 0;
+  const isOldRead = limitInfo.reason === 'already_read';
 
   return (
     <div className="pointer-events-none fixed bottom-18 left-0 right-0 z-40 px-4 md:bottom-20">
       <div className="pointer-events-auto mx-auto max-w-md">
         <Card className="border-primary/20 bg-background/95 shadow-lg backdrop-blur-sm overflow-hidden">
           {isLow && <div className="absolute top-0 left-0 h-1 bg-amber-500 w-full animate-pulse" />}
-          <CardContent className="flex items-center justify-between p-3 sm:p-4">
+          <CardContent className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between p-0 px-3 sm:p-4">
             <div className="flex items-center gap-3">
               <div className={cn('rounded-full p-2', isLow ? 'bg-amber-500/10' : 'bg-primary/10')}>
                 <Info className={cn('size-4', isLow ? 'text-amber-600' : 'text-primary')} />
@@ -200,8 +174,13 @@ function ReadingLimitOverlay({ limitInfo }: { limitInfo: LimitInfoType }) {
                     </Badge>
                   )}
                   {isFull && (
-                    <Badge variant="destructive" className="h-4 px-1 text-[8px] uppercase animate-pulse">
+                    <Badge variant="destructive" className="h-4 px-1 text-[8px] uppercase">
                       Full
+                    </Badge>
+                  )}
+                  {isOldRead && (
+                    <Badge variant="secondary" className="h-4 px-1 text-[8px] uppercase">
+                      Old Read
                     </Badge>
                   )}
                 </div>
@@ -215,10 +194,11 @@ function ReadingLimitOverlay({ limitInfo }: { limitInfo: LimitInfoType }) {
                 variant={isLow ? 'default' : 'outline'}
                 className={cn(
                   'h-8 px-3 text-[11px] font-bold uppercase rounded-lg',
-                  isLow && 'bg-amber-500 hover:bg-amber-600 text-white border-none shadow-sm',
+                  isLow &&
+                    'bg-linear-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white border-none shadow-sm',
                 )}
               >
-                <Link href="/user#billing">
+                <Link href="/plan">
                   {isLow ? <Zap className="mr-1 size-3 fill-current" /> : null}
                   {isFull ? 'Unlock Now' : 'Upgrade'}
                 </Link>
@@ -255,8 +235,7 @@ export default async function Page({ params }: { params: { slug: string; chapter
   if (!data.data) return notFound();
 
   // Handle access limit
-  if (data.data.limitInfo && data.data.limitInfo.remaining <= 0) {
-    console.log('🚀 ~ Page ~ limitInfo :- ', data.data.limitInfo);
+  if (data.data.limitInfo && !data.data.limitInfo.allowed) {
     return <LimitReachedCard slug={slug} limitInfo={data.data.limitInfo} />;
   }
 
@@ -266,7 +245,7 @@ export default async function Page({ params }: { params: { slug: string; chapter
 
   return (
     <div className="bg-background min-h-screen pb-24">
-      <ChapterHeader title={chapterData.title} slug={slug} />
+      <ChapterHeader chapterId={chapterData.chapterNumber} title={chapterData.title} slug={slug} />
 
       <main className="mx-auto max-w-3xl">
         <div className="flex flex-col items-center bg-black/5 dark:bg-white/5">
