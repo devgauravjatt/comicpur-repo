@@ -27,7 +27,7 @@ export default function Page() {
                 size="lg"
                 className="w-full gap-3 font-semibold transition-all hover:bg-muted hover:shadow-md active:scale-[0.98]"
               >
-                <Image src="/google-icon.webp" alt="Google" width={20} height={20} className="shrink-0" />
+                <Image src="/assets/images/google-icon.webp" alt="Google" width={20} height={20} className="shrink-0" />
                 Continue with Google
               </Button>
             </Link>
