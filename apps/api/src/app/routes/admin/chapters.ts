@@ -4,49 +4,44 @@ import { ChaptersService } from '@/app/services/chaptersService.js';
 import { reqValidator } from '@/lib/reqValidator.js';
 import type { Variables } from '@/types/auth.js';
 
-const chaptersRouter = new Hono<{ Variables: Variables }>();
+const chaptersRouter = new Hono<{ Variables: Variables }>()
+	.get('/count/:comicId', async (c) => {
+		const comicId = Number(c.req.param('comicId'));
+		const chaptersCount = await ChaptersService.countChaptersByComicId(comicId);
+		return c.json({ success: true, chaptersCount });
+	})
+	.get('/count/last/:comicId', async (c) => {
+		const comicId = Number(c.req.param('comicId'));
+		const lastChapterNumber = await ChaptersService.lastChapterNumberByComicId(comicId);
+		return c.json({ success: true, lastChapterNumber });
+	})
 
-chaptersRouter.get('/count/:comicId', async (c) => {
-	const comicId = Number(c.req.param('comicId'));
-	const chaptersCount = await ChaptersService.countChaptersByComicId(comicId);
-	return c.json({ success: true, chaptersCount });
-});
+	.post('/', reqValidator('json', addChaptersBodySchema, true), async (c) => {
+		const body = c.req.valid('json');
 
-chaptersRouter.get('/count/last/:comicId', async (c) => {
-	const comicId = Number(c.req.param('comicId'));
-	const lastChapterNumber = await ChaptersService.lastChapterNumberByComicId(comicId);
-	return c.json({ success: true, lastChapterNumber });
-});
+		const chapterNumberIsExist = await ChaptersService.addChapter(body);
 
-// add categories
-chaptersRouter.post('/', reqValidator('json', addChaptersBodySchema, true), async (c) => {
-	const body = c.req.valid('json');
+		if (chapterNumberIsExist) {
+			return c.json({ success: false, error: 'Chapter number already exist' }, 400);
+		}
 
-	const chapterNumberIsExist = await ChaptersService.addChapter(body);
+		return c.json({ success: true, message: 'Chapter added successfully' });
+	})
 
-	if (chapterNumberIsExist) {
-		return c.json({ success: false, error: 'Chapter number already exist' }, 400);
-	}
+	.put('/', reqValidator('json', updateChaptersBodySchema, true), async (c) => {
+		const body = c.req.valid('json');
 
-	return c.json({ success: true, message: 'Chapter added successfully' });
-});
+		await ChaptersService.updateChapter(body);
 
-// update categories
-chaptersRouter.put('/', reqValidator('json', updateChaptersBodySchema, true), async (c) => {
-	const body = c.req.valid('json');
+		return c.json({ success: true, message: 'Chapter updated successfully' });
+	})
 
-	await ChaptersService.updateChapter(body);
+	.delete('/:id', async (c) => {
+		const id = Number(c.req.param('id'));
 
-	return c.json({ success: true, message: 'Chapter updated successfully' });
-});
+		await ChaptersService.deleteChapter(id);
 
-// delete categories
-chaptersRouter.delete('/:id', async (c) => {
-	const id = Number(c.req.param('id'));
-
-	await ChaptersService.deleteChapter(id);
-
-	return c.json({ success: true, message: 'Chapter deleted successfully' });
-});
+		return c.json({ success: true, message: 'Chapter deleted successfully' });
+	});
 
 export default chaptersRouter;

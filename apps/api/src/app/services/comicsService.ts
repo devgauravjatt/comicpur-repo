@@ -124,4 +124,39 @@ export const ComicsService = {
 			totalPages: Math.ceil(itemsCount / ITEMS_PER_PAGE),
 		};
 	},
+
+	comicsListAndSearch: async (page: number, search?: string) => {
+		const ITEMS_PER_PAGE = 20;
+		const offset = ITEMS_PER_PAGE * (page - 1);
+
+		if (search) {
+			const condition = sql`${comicsTable.title} LIKE ${`%${search}%`}`;
+
+			const data = await db
+				.select()
+				.from(comicsTable)
+				.where(condition)
+				.limit(ITEMS_PER_PAGE)
+				.offset(offset);
+
+			const [{ count: itemsCount }] = await db
+				.select({ count: count() })
+				.from(comicsTable)
+				.where(condition);
+
+			return {
+				comics: data,
+				totalPages: Math.ceil(itemsCount / ITEMS_PER_PAGE),
+			};
+		}
+
+		const data = await db.select().from(comicsTable).limit(ITEMS_PER_PAGE).offset(offset);
+
+		const [{ count: itemsCount }] = await db.select({ count: count() }).from(comicsTable);
+
+		return {
+			comics: data,
+			totalPages: Math.ceil(itemsCount / ITEMS_PER_PAGE),
+		};
+	},
 };
