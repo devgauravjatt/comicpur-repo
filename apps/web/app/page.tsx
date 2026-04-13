@@ -92,7 +92,7 @@ export default async function Home() {
                   ) : (
                     <Clock className="size-5 text-primary" />
                   )}
-                  <h2 className="text-2xl font-bold tracking-tight">{section.name}</h2>
+                  <h2 className="md:text-2xl font-bold tracking-tight">{section.name}</h2>
                 </div>
                 <Link
                   href={`/categories/${section.slug}`}
@@ -103,7 +103,9 @@ export default async function Home() {
                 </Link>
               </div>
               {section.description && (
-                <p className="max-w-2xl text-sm text-muted-foreground leading-relaxed">{section.description}</p>
+                <p className="max-w-2xl text-xs md:text-sm text-muted-foreground leading-relaxed">
+                  {section.description}
+                </p>
               )}
             </div>
 

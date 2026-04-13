@@ -18,4 +18,5 @@ const contact = {
 export const siteConfig = {
   meta,
   contact,
+  languageCodes: ['hi', 'en'],
 };

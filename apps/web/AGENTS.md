@@ -1,5 +1,7 @@
 # 🤖 AGENTS.md
 
+## use pnpm
+
 ## ⚠️ Next.js Compatibility Warning
 
 This project uses a **non-standard / experimental version of Next.js**.

@@ -1,12 +1,13 @@
 import honoClient from '@/hono/client';
 import { cookies } from 'next/headers';
+import Image from 'next/image';
+
 import { notFound } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ChevronLeft, Home, Lock, Clock, Info, LogIn, Zap } from 'lucide-react';
+import { ChevronLeft, Home, Lock, Clock, Info, LogIn, Zap, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
-import CustomImage from '@/components/CustomImage';
 import { cn } from '@/lib/utils';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration.js';
@@ -20,6 +21,22 @@ interface LimitInfoType {
   reason: string;
   remaining: number;
   waitTime: number;
+}
+
+async function getComicDetail(slug: string) {
+  try {
+    const response = await honoClient.api.v1.public.comics
+      .$get({
+        query: { slug },
+      })
+      .then(async (res) => await res.json());
+
+    if (!response.success) return null;
+    return response.data;
+  } catch (error) {
+    console.error('Failed to fetch comic detail:', error);
+    return null;
+  }
 }
 
 function formatDuration(ms: number) {
@@ -142,6 +159,47 @@ function ChapterHeader({ title, slug, chapterId }: { title: string; slug: string
   );
 }
 
+function ChapterNavigation({
+  slug,
+  currentChapter,
+  totalChapters,
+}: {
+  slug: string;
+  currentChapter: number;
+  totalChapters: number;
+}) {
+  const prevChapter = currentChapter > 1 ? currentChapter - 1 : null;
+  const nextChapter = currentChapter < totalChapters ? currentChapter + 1 : null;
+
+  return (
+    <div className="mx-auto max-w-3xl px-4 py-8">
+      <div className="flex items-center justify-between gap-4">
+        {prevChapter ? (
+          <Button asChild variant="outline" className="flex-1 h-12 rounded-2xl font-bold">
+            <Link href={`/comic/${slug}/${prevChapter}`}>
+              <ChevronLeft className="mr-2 size-5" />
+              Previous
+            </Link>
+          </Button>
+        ) : (
+          <div className="flex-1" />
+        )}
+
+        {nextChapter ? (
+          <Button variant={'secondary'} asChild className="flex-1 h-12 rounded-2xl font-bold">
+            <Link href={`/comic/${slug}/${nextChapter}`}>
+              Next
+              <ChevronRight className="ml-2 size-5" />
+            </Link>
+          </Button>
+        ) : (
+          <div className="flex-1" />
+        )}
+      </div>
+    </div>
+  );
+}
+
 function ReadingLimitOverlay({ limitInfo }: { limitInfo: LimitInfoType }) {
   const isLow = limitInfo.remaining <= 2;
   const isFull = limitInfo.remaining === 0;
@@ -243,6 +301,10 @@ export default async function Page({ params }: { params: { slug: string; chapter
 
   if (!chapterData) return notFound();
 
+  // Fetch comic details to get total chapters for navigation
+  const comicData = await getComicDetail(slug);
+  const totalChapters = comicData?.comic.chaptersCount || chapterData.chapterNumber;
+
   return (
     <div className="bg-background min-h-screen pb-24">
       <ChapterHeader chapterId={chapterData.chapterNumber} title={chapterData.title} slug={slug} />
@@ -251,7 +313,7 @@ export default async function Page({ params }: { params: { slug: string; chapter
         <div className="flex flex-col items-center bg-black/5 dark:bg-white/5">
           {chapterData.images.map((image, index) => (
             <div key={image} className="relative w-full overflow-hidden">
-              <CustomImage
+              <Image
                 src={image}
                 alt={`${chapterData.title} - Page ${index + 1}`}
                 width={1200}
@@ -263,6 +325,8 @@ export default async function Page({ params }: { params: { slug: string; chapter
             </div>
           ))}
         </div>
+
+        <ChapterNavigation slug={slug} currentChapter={chapterData.chapterNumber} totalChapters={totalChapters} />
       </main>
 
       {data.data.limitInfo && <ReadingLimitOverlay limitInfo={data.data.limitInfo} />}

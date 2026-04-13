@@ -6,6 +6,7 @@ import '@fontsource-variable/merriweather/standard.css';
 import honoClient from '@/hono/client';
 import { Footer } from '@/components/footer';
 import { BottomNav } from '@/components/bottom-nav';
+import { Toaster } from '@/components/ui/sonner';
 import { siteConfig } from '@/lib/site-config';
 import { cookies } from 'next/headers';
 import { Suspense } from 'react';
@@ -96,6 +97,7 @@ export default function RootLayout({
           <Suspense fallback={<NavLoding />}>
             <BottomNav />
           </Suspense>
+          <Toaster position="top-center" richColors />
         </TooltipProvider>
       </body>
     </html>

@@ -17,6 +17,8 @@ export function ComicCard({ comic }: ComicCardProps) {
       <Card className="h-full border-none shadow-none bg-transparent hover:bg-accent/10 transition-all duration-300 overflow-hidden">
         <div className="relative aspect-3/4 overflow-hidden rounded-2xl shadow-sm group-hover:shadow-md transition-shadow">
           <Image
+            placeholder="blur"
+            blurDataURL="https://placehold.net/400x600.png"
             src={comic.coverImage}
             alt={comic.title}
             fill

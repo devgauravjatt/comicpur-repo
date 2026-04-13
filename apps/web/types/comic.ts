@@ -22,7 +22,7 @@ export interface Comic {
   chaptersCount: number;
   languageCode: string;
   isAdult: boolean;
-  categoryId: number;
+  categoryIds: number[];
   createdAt: string;
   updatedAt: string;
 }
