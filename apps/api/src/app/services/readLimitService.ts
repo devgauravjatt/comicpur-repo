@@ -84,8 +84,7 @@ export const readLimitService = {
 				chapterId,
 				readDate: today,
 			});
-		} catch (err) {
-			console.log('🚀 ~ err :- ', err);
+		} catch (_err) {
 			// duplicate safe fallback
 			return {
 				allowed: true,

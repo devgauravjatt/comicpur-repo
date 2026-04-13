@@ -13,7 +13,7 @@ serve(
 		port: appEnv.PORT,
 	},
 	(info) => {
-		console.log(`Server is running on http://localhost:${info.port}`);
+		console.info(`Server is running on http://localhost:${info.port}`);
 	},
 );
 

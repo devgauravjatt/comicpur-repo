@@ -1,4 +1,5 @@
 import z from 'zod';
+import { appConfig } from '@/config/app-config.js';
 
 /**
  * Schema for validating the request body of the /auth/check endpoint.
@@ -31,7 +32,10 @@ export const addComicBodySchema = z.object({
 	description: z.string().min(10, 'Description is required to be at least 10 characters long'),
 	coverImage: z.string().min(11, 'Cover image is required to be a valid URL').url(),
 	published: z.boolean().default(false),
-	languageCode: z.string().min(2, 'Language code is required to be at least 2 characters long'),
+	languageCode: z
+		.string()
+		.min(2, 'Language code is required to be at least 2 characters long')
+		.refine((code) => appConfig.languageCodes.includes(code), 'Language code is not valid'),
 	isAdult: z.boolean().default(false),
 	slug: z.string().min(10, 'Slug is required to be at least 10 characters long'),
 	categoryIds: z
@@ -53,6 +57,7 @@ export const updateComicBodySchema = z
 		languageCode: z
 			.string()
 			.min(2, 'Language code is required to be at least 2 characters long')
+			.refine((code) => appConfig.languageCodes.includes(code), 'Language code is not valid')
 			.optional(),
 		isAdult: z.boolean().optional(),
 		slug: z.string().min(10, 'Slug is required to be at least 10 characters long').optional(),

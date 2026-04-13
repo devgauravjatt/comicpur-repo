@@ -17,7 +17,6 @@ export const ChaptersService = {
 			.where(
 				and(eq(chaptersTable.comicId, comicId), eq(chaptersTable.chapterNumber, chapterNumber)),
 			);
-		console.log('🚀 ~ result :- ', result.length);
 		return result.length > 0;
 	},
 	// count chapters by comic id
@@ -60,8 +59,7 @@ export const ChaptersService = {
 				chaptersCount: count,
 			});
 			return false;
-		} catch (error) {
-			console.log('🚀 ~ error :- ', error);
+		} catch (_error) {
 			return false;
 		}
 	},
