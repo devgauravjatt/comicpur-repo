@@ -84,7 +84,7 @@ export function ComicCard({ comic }: ComicCardProps) {
         </div>
 
         <CardHeader className="p-3 pt-2">
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<span className="text-text-200 text-sm">{comic.title}</span>}>
             <TranslatedTitle comicTitle={comic.title} />
           </Suspense>
           <div className="mt-1 flex items-center justify-between">

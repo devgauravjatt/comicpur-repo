@@ -1,10 +1,10 @@
 // oxlint-disable no-unused-vars
-import translate from 'google-translate-api-x';
+import translate from 'translate';
 
 export async function translateComicTitle(comicTitle: string) {
   try {
-    const res = await translate(comicTitle, { from: 'en', to: 'hi', autoCorrect: true });
-    return res.text ? `${comicTitle} - ${res.text}` : comicTitle;
+    const res = await translate(comicTitle, { from: 'en', to: 'hi' });
+    return res ? `${comicTitle} - ${res}` : comicTitle;
   } catch (_error) {
     return comicTitle;
   }
