@@ -40,7 +40,8 @@ export const addComicBodySchema = z.object({
 	slug: z.string().min(10, 'Slug is required to be at least 10 characters long'),
 	categoryIds: z
 		.array(z.number().int().positive('Category ID is required to be a valid ID'))
-		.min(1, 'Category ID is required to be at least 1'),
+		.min(1, 'Category ID is required to be at least 1')
+		.max(3, 'Category ID is required to be at most 3'),
 });
 
 // Schema for validating the request body of the /admin/comics PUT endpoint.
@@ -64,6 +65,7 @@ export const updateComicBodySchema = z
 		categoryIds: z
 			.array(z.number().int().positive('Category ID is required to be a valid ID'))
 			.min(1, 'Category ID is required to be at least 1')
+			.max(3, 'Category ID is required to be at most 3')
 			.optional(),
 	})
 	.refine(
