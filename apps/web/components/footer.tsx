@@ -15,7 +15,7 @@ const navLinks = [
 
 export function Footer() {
   return (
-    <footer className="mx-auto max-w-5xl *:px-4 *:md:px-6 pb-16">
+    <footer className="mx-auto max-w-5xl pb-16 *:px-4 *:md:px-6">
       <div className="flex flex-col gap-6 py-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -33,7 +33,7 @@ export function Footer() {
         </div>
 
         <nav>
-          <ul className="flex flex-wrap gap-4 font-medium text-muted-foreground text-sm md:gap-6">
+          <ul className="text-muted-foreground flex flex-wrap gap-4 text-sm font-medium md:gap-6">
             {navLinks.map((link) => (
               <li key={link.label}>
                 <a className="hover:text-foreground" href={link.href}>
@@ -48,12 +48,12 @@ export function Footer() {
         </Button>
       </div>
 
-      <div className="flex items-center justify-center border-t py-4 text-muted-foreground text-sm">
+      <div className="text-muted-foreground flex items-center justify-center border-t py-4 text-sm">
         <p className="inline-flex items-center gap-1">
           <span>Built and development by</span>
           <a
             aria-label="x/twitter"
-            className="inline-flex items-center gap-1 text-foreground/80 hover:text-foreground hover:underline"
+            className="text-foreground/80 hover:text-foreground inline-flex items-center gap-1 hover:underline"
             href={'https://github.com/devgauravjatt'}
             title="devgauravjatt"
             rel="noreferrer"

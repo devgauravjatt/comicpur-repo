@@ -18,7 +18,7 @@ export function IsNewBadge({ createdAt }: IsNewBadgeProps) {
   if (!isNew) return null;
 
   return (
-    <Badge className="bg-amber-500 hover:bg-amber-600 text-white border-none text-[10px] h-5 px-1.5 uppercase font-bold tracking-wider">
+    <Badge className="h-5 border-none bg-amber-500 px-1.5 text-[10px] font-bold tracking-wider text-white uppercase hover:bg-amber-600">
       New
     </Badge>
   );

@@ -10,6 +10,7 @@ import { Toaster } from '@/components/ui/sonner';
 import { siteConfig } from '@/lib/site-config';
 import { cookies } from 'next/headers';
 import { Suspense } from 'react';
+import { FloatingContact } from '@/components/FloatingContact';
 
 export const metadata: Metadata = {
   title: siteConfig.meta.title,
@@ -81,7 +82,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={` antialiased flex min-h-dvh w-full dark`}>
+      <body className={`dark flex min-h-dvh w-full antialiased`}>
         <TooltipProvider>
           <div className="flex flex-1 flex-col">
             <Suspense fallback={<Header user={null} />}>
@@ -92,6 +93,7 @@ export default function RootLayout({
             </main>
             <div className="w-full">
               <Footer />
+              <FloatingContact whatsappUrl={siteConfig.contact.whatsapp} telegramUrl={siteConfig.contact.telegram} />
             </div>
           </div>
           <Suspense fallback={<NavLoding />}>

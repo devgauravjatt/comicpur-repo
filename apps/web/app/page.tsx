@@ -61,19 +61,19 @@ export default async function Home() {
   return (
     <div className="flex flex-col gap-12 pb-10">
       {/* Hero Section */}
-      <section className="relative z-10 max-w-2xl mx-auto md:mx-0">
+      <section className="relative z-10 mx-auto max-w-2xl md:mx-0">
         <h1 className="mb-4 text-3xl font-black tracking-tight md:text-4xl lg:text-5xl xl:text-4xl">
-          Read Your FavoriteComics Online
+          Read Your Favorite Comics Online
         </h1>
-        <p className="mb-6 text-sm md:text-base text-muted-foreground leading-relaxed max-w-lg mx-auto md:mx-0">
+        <p className="text-muted-foreground mx-auto mb-6 max-w-lg text-sm leading-relaxed md:mx-0 md:text-base">
           Explore thousands of comics, manga, and manhwa in high quality. Updated daily with the latest chapters.
         </p>
-        <div className="flex flex-col sm:flex-row flex-wrap gap-3 justify-center md:justify-start">
+        <div className="flex flex-col flex-wrap justify-center gap-3 sm:flex-row md:justify-start">
           <Link href="/categories" className="w-full sm:w-auto">
             <Button
               size="lg"
               variant="outline"
-              className="w-full rounded-full px-8 h-11 md:h-12 text-sm font-bold backdrop-blur-sm transition-all hover:-translate-y-0.5"
+              className="h-11 w-full rounded-full px-8 text-sm font-bold backdrop-blur-sm transition-all hover:-translate-y-0.5 md:h-12"
             >
               Browse Categories
             </Button>
@@ -88,22 +88,22 @@ export default async function Home() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   {index === 0 ? (
-                    <TrendingUp className="size-5 text-primary" />
+                    <TrendingUp className="text-primary size-5" />
                   ) : (
-                    <Clock className="size-5 text-primary" />
+                    <Clock className="text-primary size-5" />
                   )}
-                  <h2 className="md:text-2xl font-bold tracking-tight">{section.name}</h2>
+                  <h2 className="font-bold tracking-tight md:text-2xl">{section.name}</h2>
                 </div>
                 <Link
                   href={`/categories/${section.slug}`}
-                  className="group flex items-center gap-1 text-sm font-semibold text-primary transition-all hover:gap-2"
+                  className="group text-primary flex items-center gap-1 text-sm font-semibold transition-all hover:gap-2"
                 >
                   See all
                   <ChevronRight className="size-4 transition-transform group-hover:translate-x-0.5" />
                 </Link>
               </div>
               {section.description && (
-                <p className="max-w-2xl text-xs md:text-sm text-muted-foreground leading-relaxed">
+                <p className="text-muted-foreground max-w-2xl text-xs leading-relaxed md:text-sm">
                   {section.description}
                 </p>
               )}

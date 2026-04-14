@@ -51,7 +51,7 @@ export default async function page() {
   if (!response.success) {
     return (
       <div className="container mx-auto py-10">
-        <h1 className="text-3xl font-bold mb-6">Categories</h1>
+        <h1 className="mb-6 text-3xl font-bold">Categories</h1>
         <p className="text-destructive">Failed to load categories.</p>
       </div>
     );
@@ -60,8 +60,8 @@ export default async function page() {
   const { categories } = response;
 
   return (
-    <div className="container mx-auto py-10 px-4">
-      <div className="flex items-center justify-between mb-8">
+    <div className="container mx-auto px-4 py-10">
+      <div className="mb-8 flex items-center justify-between">
         <div>
           <h1 className="text-4xl font-bold tracking-tight">Categories</h1>
           <p className="text-muted-foreground mt-2">Browse through our collection of comic categories.</p>
@@ -71,27 +71,27 @@ export default async function page() {
         </Badge>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {categories.map((category) => {
           const Icon = categoryIcons[category.slug] || ChartBarStacked;
           return (
             <Link key={category.id} href={`/categories/${category.slug}`}>
-              <Card className="h-full hover:shadow-md transition-shadow cursor-pointer group">
+              <Card className="group h-full cursor-pointer transition-shadow hover:shadow-md">
                 <CardHeader>
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex items-center gap-3">
-                      <div className="p-2 rounded-lg bg-primary/5 group-hover:bg-primary/10 transition-colors">
-                        <Icon className="size-5 text-primary" />
+                      <div className="bg-primary/5 group-hover:bg-primary/10 rounded-lg p-2 transition-colors">
+                        <Icon className="text-primary size-5" />
                       </div>
                       <CardTitle className="line-clamp-1">{category.name}</CardTitle>
                     </div>
                     {category.isAdult && (
-                      <Badge variant="destructive" className="shrink-0 text-[10px] h-4 px-1">
+                      <Badge variant="destructive" className="h-4 shrink-0 px-1 text-[10px]">
                         18+
                       </Badge>
                     )}
                   </div>
-                  <CardDescription className="line-clamp-3 min-h-12 mt-2">
+                  <CardDescription className="mt-2 line-clamp-3 min-h-12">
                     {category.description || 'No description available for this category.'}
                   </CardDescription>
                 </CardHeader>
@@ -102,7 +102,7 @@ export default async function page() {
       </div>
 
       {categories.length === 0 && (
-        <div className="text-center py-20">
+        <div className="py-20 text-center">
           <p className="text-muted-foreground">No categories found.</p>
         </div>
       )}

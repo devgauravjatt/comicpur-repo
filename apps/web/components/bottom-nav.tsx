@@ -22,7 +22,7 @@ export function BottomNav() {
   }, [pathname]);
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 mx-auto w-full md:max-w-7xl md:rounded-4xl h-16 border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
+    <div className="bg-background/95 supports-backdrop-filter:bg-background/60 fixed right-0 bottom-0 left-0 z-50 mx-auto h-16 w-full border backdrop-blur md:max-w-7xl md:rounded-4xl">
       <div className="grid h-full w-full grid-cols-4">
         {' '}
         {/* Adjust cols for item count */}
@@ -36,7 +36,7 @@ export function BottomNav() {
             )}
             onClick={() => setActivePath(href)}
           >
-            <Icon className="h-5 w-5 mb-0.5" />
+            <Icon className="mb-0.5 h-5 w-5" />
             <span className="text-xs">{label}</span>
           </Link>
         ))}

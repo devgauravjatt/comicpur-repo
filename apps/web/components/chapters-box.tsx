@@ -47,18 +47,18 @@ export default function ChaptersBox({
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex items-center gap-2 mb-2">
+      <div className="mb-2 flex items-center gap-2">
         <BookAIcon />
         <h2 className="text-lg font-semibold">Chapters</h2>
-        <span className="text-sm text-muted-foreground">({totalChapters})</span>
+        <span className="text-muted-foreground text-sm">({totalChapters})</span>
       </div>
       <InfiniteScroll
-        className="[&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+        className="[-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         dataLength={chapters.length}
         next={loadMore}
         hasMore={hasMore}
         loader={
-          <div className="flex justify-center mt-4">
+          <div className="mt-4 flex justify-center">
             <Loader className="animate-spin" />
           </div>
         }
@@ -70,21 +70,21 @@ export default function ChaptersBox({
       >
         {chapters.map((chapter) => (
           <Link key={chapter.id} href={`/comic/${comicSlug}/${chapter.chapterNumber}`}>
-            <Card className="hover:bg-accent/50 mt-4 transition-colors border border-muted-foreground/20 shadow-none bg-muted/20">
-              <CardContent className="p-4 flex items-center justify-between">
+            <Card className="hover:bg-accent/50 border-muted-foreground/20 bg-muted/20 mt-4 border shadow-none transition-colors">
+              <CardContent className="flex items-center justify-between p-4">
                 <div className="flex items-center gap-4">
-                  <div className="size-10 rounded-xl bg-background flex items-center justify-center font-bold text-sm  shadow-sm">
+                  <div className="bg-background flex size-10 items-center justify-center rounded-xl text-sm font-bold shadow-sm">
                     {chapter.chapterNumber}
                   </div>
                   <div>
-                    <p className="font-bold text-sm leading-none mb-1">Chapter {chapter.chapterNumber}</p>
-                    <p className="text-xs text-muted-foreground line-clamp-1">
+                    <p className="mb-1 text-sm leading-none font-bold">Chapter {chapter.chapterNumber}</p>
+                    <p className="text-muted-foreground line-clamp-1 text-xs">
                       {chapter.title || `Chapter ${chapter.chapterNumber}`}
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center gap-3 text-muted-foreground">
-                  <span className="text-[10px] font-medium flex items-center gap-1">
+                <div className="text-muted-foreground flex items-center gap-3">
+                  <span className="flex items-center gap-1 text-[10px] font-medium">
                     <Clock className="size-3" />
                     {new Date().toLocaleDateString('en-US', {
                       month: 'short',

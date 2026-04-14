@@ -1,7 +1,6 @@
 import honoClient from '@/hono/client';
 import { cookies } from 'next/headers';
 import Image from 'next/image';
-
 import { notFound } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -51,11 +50,11 @@ function formatDuration(ms: number) {
 function UnauthorizedCard() {
   return (
     <div className="flex min-h-[80vh] flex-col items-center justify-center p-4 text-center">
-      <Card className="w-full max-w-md border-primary/20 bg-primary/5 shadow-none">
+      <Card className="border-primary/20 bg-primary/5 w-full max-w-md shadow-none">
         <CardContent className="pt-8">
           <div className="mb-6 flex justify-center">
-            <div className="rounded-full bg-primary/10 p-4">
-              <LogIn className="size-10 text-primary" />
+            <div className="bg-primary/10 rounded-full p-4">
+              <LogIn className="text-primary size-10" />
             </div>
           </div>
           <h2 className="mb-3 text-2xl font-bold">Login Required</h2>
@@ -79,37 +78,37 @@ function LimitReachedCard({ limitInfo }: { slug: string; limitInfo: LimitInfoTyp
     <div className="flex min-h-[80vh] flex-col items-center justify-center p-4 text-center">
       <div className="relative w-full max-w-md overflow-hidden">
         {/* Premium Background Accent */}
-        <div className="absolute -mt-16 -mr-16 top-0 right-0 h-32 w-32 rounded-full" />
+        <div className="absolute top-0 right-0 -mt-16 -mr-16 h-32 w-32 rounded-full" />
 
         <div className="relative z-10 px-6 pt-10 pb-8">
           <div className="mb-6 flex justify-center">
-            <span className="animate-bounce bg-destructive/10 text-destructive border-destructive/20 px-4 py-1 text-xs font-black uppercase tracking-widest">
+            <span className="bg-destructive/10 text-destructive border-destructive/20 animate-bounce px-4 py-1 text-xs font-black tracking-widest uppercase">
               Today&apos;s Limit Reached
             </span>
           </div>
 
           <div className="mb-8 flex justify-center">
             <div className="relative">
-              <div className="absolute inset-0 animate-pulse rounded-full bg-destructive/20 blur-xl" />
-              <div className="relative rounded-full border border-destructive/20 bg-destructive/10 p-5">
-                <Lock className="size-12 text-destructive" />
+              <div className="bg-destructive/20 absolute inset-0 animate-pulse rounded-full blur-xl" />
+              <div className="border-destructive/20 bg-destructive/10 relative rounded-full border p-5">
+                <Lock className="text-destructive size-12" />
               </div>
             </div>
           </div>
 
-          <h2 className="mb-4 text-2xl font-black tracking-tight text-destructive">Daily Reading Limit</h2>
+          <h2 className="text-destructive mb-4 text-2xl font-black tracking-tight">Daily Reading Limit</h2>
 
           <p className="text-muted-foreground mb-8 px-2 text-sm leading-relaxed">
             You&apos;ve exhausted your free daily chapters. Unlock Pro to read unlimited chapters right now!
           </p>
 
           <div className="mb-8 flex justify-center">
-            <div className="rounded-2xl border border-border bg-background/80 p-4 shadow-sm w-full max-w-55">
-              <div className="text-muted-foreground mb-1 flex items-center justify-center gap-1.5 text-[10px] font-bold uppercase tracking-wider">
+            <div className="border-border bg-background/80 w-full max-w-55 rounded-2xl border p-4 shadow-sm">
+              <div className="text-muted-foreground mb-1 flex items-center justify-center gap-1.5 text-[10px] font-bold tracking-wider uppercase">
                 <Clock className="size-3" />
                 <span>Wait Time</span>
               </div>
-              <div className="text-amber-600 text-xl font-black tracking-tight tabular-nums">
+              <div className="text-xl font-black tracking-tight text-amber-600 tabular-nums">
                 {formatDuration(limitInfo.waitTime)}
               </div>
             </div>
@@ -119,7 +118,7 @@ function LimitReachedCard({ limitInfo }: { slug: string; limitInfo: LimitInfoTyp
             <Button
               asChild
               size="lg"
-              className="h-14 w-full border-none bg-amber-500 text-base font-bold text-white shadow-lg shadow-amber-500/20 hover:bg-amber-600 rounded-2xl"
+              className="h-14 w-full rounded-2xl border-none bg-amber-500 text-base font-bold text-white shadow-lg shadow-amber-500/20 hover:bg-amber-600"
             >
               <Link href="/plan">
                 <Zap className="mr-2 size-5 fill-white" />
@@ -128,7 +127,7 @@ function LimitReachedCard({ limitInfo }: { slug: string; limitInfo: LimitInfoTyp
             </Button>
           </div>
 
-          <p className="mt-8 text-[11px] text-muted-foreground/60">
+          <p className="text-muted-foreground/60 mt-8 text-[11px]">
             Enjoying Comicpur? Join 10k+ readers on our Pro Plan!
           </p>
         </div>
@@ -175,7 +174,7 @@ function ChapterNavigation({
     <div className="mx-auto max-w-3xl px-4 py-8">
       <div className="flex items-center justify-between gap-4">
         {prevChapter ? (
-          <Button asChild variant="outline" className="flex-1 h-12 rounded-2xl font-bold">
+          <Button asChild variant="outline" className="h-12 flex-1 rounded-2xl font-bold">
             <Link href={`/comic/${slug}/${prevChapter}`}>
               <ChevronLeft className="mr-2 size-5" />
               Previous
@@ -186,7 +185,7 @@ function ChapterNavigation({
         )}
 
         {nextChapter ? (
-          <Button variant={'secondary'} asChild className="flex-1 h-12 rounded-2xl font-bold">
+          <Button variant={'secondary'} asChild className="h-12 flex-1 rounded-2xl font-bold">
             <Link href={`/comic/${slug}/${nextChapter}`}>
               Next
               <ChevronRight className="ml-2 size-5" />
@@ -206,17 +205,17 @@ function ReadingLimitOverlay({ limitInfo }: { limitInfo: LimitInfoType }) {
   const isOldRead = limitInfo.reason === 'already_read';
 
   return (
-    <div className="pointer-events-none fixed bottom-18 left-0 right-0 z-40 px-4 md:bottom-20">
+    <div className="pointer-events-none fixed right-0 bottom-18 left-0 z-40 px-4 md:bottom-20">
       <div className="pointer-events-auto mx-auto max-w-md">
-        <Card className="border-primary/20 bg-background/95 shadow-lg backdrop-blur-sm overflow-hidden">
-          {isLow && <div className="absolute top-0 left-0 h-1 bg-amber-500 w-full animate-pulse" />}
-          <CardContent className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between p-0 px-3 sm:p-4">
+        <Card className="border-primary/20 bg-background/95 overflow-hidden shadow-lg backdrop-blur-sm">
+          {isLow && <div className="absolute top-0 left-0 h-1 w-full animate-pulse bg-amber-500" />}
+          <CardContent className="flex flex-col gap-4 p-0 px-3 sm:p-4 md:flex-row md:items-center md:justify-between">
             <div className="flex items-center gap-3">
               <div className={cn('rounded-full p-2', isLow ? 'bg-amber-500/10' : 'bg-primary/10')}>
                 <Info className={cn('size-4', isLow ? 'text-amber-600' : 'text-primary')} />
               </div>
               <div className="flex flex-col">
-                <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground leading-none mb-1">
+                <span className="text-muted-foreground mb-1 text-[10px] leading-none font-medium tracking-wider uppercase">
                   Reading Limit
                 </span>
                 <div className="flex items-center gap-2">
@@ -226,7 +225,7 @@ function ReadingLimitOverlay({ limitInfo }: { limitInfo: LimitInfoType }) {
                   {isLow && !isFull && (
                     <Badge
                       variant="destructive"
-                      className="h-4 px-1 text-[8px] uppercase bg-amber-500 hover:bg-amber-600 border-none"
+                      className="h-4 border-none bg-amber-500 px-1 text-[8px] uppercase hover:bg-amber-600"
                     >
                       Low
                     </Badge>

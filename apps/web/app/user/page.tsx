@@ -44,19 +44,19 @@ export default async function Page() {
     <div className="mx-auto w-full max-w-5xl space-y-8 p-4 md:p-6">
       {/* Profile Header */}
       <div id="account" className="flex flex-col items-center gap-6 text-center md:flex-row md:text-left">
-        <Avatar className="size-24 border-2 border-primary/10 shadow-sm md:size-32">
+        <Avatar className="border-primary/10 size-24 border-2 shadow-sm md:size-32">
           <AvatarImage src={profile.user.avatar} alt={profile.user.name} />
           <AvatarFallback className="text-3xl font-bold uppercase">{profile.user.name[0]}</AvatarFallback>
         </Avatar>
         <div className="space-y-2">
           <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">{profile.user.name}</h1>
-          <div className="flex flex-wrap items-center justify-center gap-4 text-muted-foreground md:justify-start">
+          <div className="text-muted-foreground flex flex-wrap items-center justify-center gap-4 md:justify-start">
             <div className="flex items-center gap-2">
               <Mail className="size-4" />
               <span className="text-sm font-medium">{profile.user.email}</span>
             </div>
             {billing.premium && (
-              <div className="flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-0.5 text-xs font-semibold text-primary">
+              <div className="bg-primary/10 text-primary flex items-center gap-1.5 rounded-full px-3 py-0.5 text-xs font-semibold">
                 <ShieldCheck className="size-3.5" />
                 PRO USER
               </div>
@@ -72,18 +72,18 @@ export default async function Page() {
         <Card className="flex flex-col">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <User className="size-5 text-primary" />
+              <User className="text-primary size-5" />
               Account Details
             </CardTitle>
             <CardDescription>Manage your personal profile information</CardDescription>
           </CardHeader>
           <CardContent className="flex-1 space-y-4">
             <div className="grid gap-1">
-              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Full Name</span>
+              <span className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">Full Name</span>
               <p className="text-base font-medium">{profile.user.name}</p>
             </div>
             <div className="grid gap-1">
-              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+              <span className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
                 Email Address
               </span>
               <p className="text-base font-medium">{profile.user.email}</p>
@@ -95,7 +95,7 @@ export default async function Page() {
         <Card id="billing" className="flex flex-col">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <CreditCard className="size-5 text-primary" />
+              <CreditCard className="text-primary size-5" />
               Subscription
             </CardTitle>
             <CardDescription>View and manage your billing status</CardDescription>
@@ -104,27 +104,27 @@ export default async function Page() {
             {billing.premium ? (
               <div className="space-y-4">
                 <div className="grid gap-1">
-                  <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  <span className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
                     Current Plan
                   </span>
-                  <div className="flex items-center gap-2 font-semibold text-primary">
+                  <div className="text-primary flex items-center gap-2 font-semibold">
                     <ShieldCheck className="size-4" />
                     Premium Plan
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="grid gap-1">
-                    <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    <span className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
                       Payment Method
                     </span>
                     <p className="text-sm font-medium capitalize">{billing.premium.payMode}</p>
                   </div>
                   <div className="grid gap-1">
-                    <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    <span className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
                       Expiry Date
                     </span>
                     <div className="flex items-center gap-1.5 text-sm font-medium">
-                      <Calendar className="size-3.5 text-muted-foreground" />
+                      <Calendar className="text-muted-foreground size-3.5" />
                       {new Date(billing.premium.expiryDate).toLocaleDateString(undefined, {
                         month: 'short',
                         day: 'numeric',
@@ -136,12 +136,12 @@ export default async function Page() {
               </div>
             ) : (
               <div className="flex h-full flex-col items-center justify-center space-y-3 py-4 text-center">
-                <div className="rounded-full bg-muted p-3">
-                  <CreditCard className="size-6 text-muted-foreground" />
+                <div className="bg-muted rounded-full p-3">
+                  <CreditCard className="text-muted-foreground size-6" />
                 </div>
                 <div className="space-y-1">
                   <p className="text-sm font-medium">No Active Subscription</p>
-                  <p className="text-xs text-muted-foreground">Upgrade to Premium to access all features.</p>
+                  <p className="text-muted-foreground text-xs">Upgrade to Premium to access all features.</p>
                 </div>
                 <Button asChild size="sm" className="mt-2 rounded-xl">
                   <Link href="/plan">View Plans</Link>
@@ -155,15 +155,15 @@ export default async function Page() {
         <Card id="preferences" className="md:col-span-2">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Settings className="size-5 text-primary" />
+              <Settings className="text-primary size-5" />
               Preferences
             </CardTitle>
             <CardDescription>Personalize your experience with ComicPur</CardDescription>
           </CardHeader>
-          <CardContent className="flex min-h-30 items-center justify-center rounded-lg border border-dashed bg-muted/30 p-8 text-center">
+          <CardContent className="bg-muted/30 flex min-h-30 items-center justify-center rounded-lg border border-dashed p-8 text-center">
             <div className="space-y-2">
-              <p className="text-sm font-medium text-muted-foreground italic">Settings & Preferences are coming soon</p>
-              <p className="text-xs text-muted-foreground/60">
+              <p className="text-muted-foreground text-sm font-medium italic">Settings & Preferences are coming soon</p>
+              <p className="text-muted-foreground/60 text-xs">
                 We&apos;re working on giving you more control on website and content preferences.
               </p>
             </div>

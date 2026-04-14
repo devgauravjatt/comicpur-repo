@@ -16,11 +16,11 @@ export const metadata: Metadata = {
 
 export default function PlanPage() {
   return (
-    <div className="min-h-screen bg-background p-4 md:p-8">
+    <div className="bg-background min-h-screen p-4 md:p-8">
       <div className="mx-auto max-w-md space-y-6">
         {/* Header */}
         <div className="flex flex-col gap-2 pt-4">
-          <Button variant="ghost" size="sm" asChild className="w-fit -ml-2 text-muted-foreground hover:text-foreground">
+          <Button variant="ghost" size="sm" asChild className="text-muted-foreground hover:text-foreground -ml-2 w-fit">
             <Link href="/">
               <ArrowLeft className="mr-2 size-4" />
               Back to Browse
@@ -28,12 +28,12 @@ export default function PlanPage() {
           </Button>
           <div className="space-y-1">
             <h1 className="text-2xl font-bold tracking-tight">Choose Your Plan</h1>
-            <p className="text-sm text-muted-foreground">Select the best way to enjoy your favorite comics.</p>
+            <p className="text-muted-foreground text-sm">Select the best way to enjoy your favorite comics.</p>
           </div>
         </div>
 
         {/* Free Plan */}
-        <Card className="relative overflow-hidden border-border transition-all hover:border-muted-foreground/20">
+        <Card className="border-border hover:border-muted-foreground/20 relative overflow-hidden transition-all">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">Free Plan</CardTitle>
             <CardDescription>Perfect for casual readers</CardDescription>
@@ -41,23 +41,23 @@ export default function PlanPage() {
           <CardContent className="space-y-4">
             <div className="flex items-baseline gap-1">
               <span className="text-3xl font-bold">₹0</span>
-              <span className="text-sm text-muted-foreground">/ forever</span>
+              <span className="text-muted-foreground text-sm">/ forever</span>
             </div>
             <ul className="space-y-2.5 text-sm">
               <li className="flex items-center gap-2">
-                <div className="rounded-full bg-primary/10 p-0.5">
-                  <Check className="size-3.5 text-primary" />
+                <div className="bg-primary/10 rounded-full p-0.5">
+                  <Check className="text-primary size-3.5" />
                 </div>
                 <span>5 Daily Free Chapters</span>
               </li>
               <li className="flex items-center gap-2">
-                <div className="rounded-full bg-primary/10 p-0.5">
-                  <Check className="size-3.5 text-primary" />
+                <div className="bg-primary/10 rounded-full p-0.5">
+                  <Check className="text-primary size-3.5" />
                 </div>
                 <span>Standard Reading Experience</span>
               </li>
-              <li className="flex items-center gap-2 text-muted-foreground">
-                <div className="rounded-full bg-muted p-0.5">
+              <li className="text-muted-foreground flex items-center gap-2">
+                <div className="bg-muted rounded-full p-0.5">
                   <X className="size-3.5" />
                 </div>
                 <span>Contains Advertisements</span>
@@ -67,16 +67,16 @@ export default function PlanPage() {
         </Card>
 
         {/* Pro Plan */}
-        <Card className="relative overflow-hidden border-primary/50 bg-primary/2 shadow-xl shadow-primary/5 transition-all hover:border-primary">
+        <Card className="border-primary/50 bg-primary/2 shadow-primary/5 hover:border-primary relative overflow-hidden shadow-xl transition-all">
           <div className="absolute top-0 right-0">
-            <div className="bg-primary px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-primary-foreground rounded-bl-lg">
+            <div className="bg-primary text-primary-foreground rounded-bl-lg px-3 py-1 text-[10px] font-bold tracking-wider uppercase">
               Most Popular
             </div>
           </div>
           <CardHeader>
             <div className="flex items-center justify-between pt-2">
               <CardTitle className="flex items-center gap-2">
-                <Zap className="size-5 fill-primary text-primary" />
+                <Zap className="fill-primary text-primary size-5" />
                 Pro Plan
               </CardTitle>
               <Badge className="bg-primary/10 text-primary hover:bg-primary/20 border-none">UNLIMITED</Badge>
@@ -86,41 +86,41 @@ export default function PlanPage() {
           <CardContent className="space-y-4">
             <div className="flex items-baseline gap-1">
               <span className="text-3xl font-bold">₹99</span>
-              <span className="text-sm text-muted-foreground">/ month</span>
+              <span className="text-muted-foreground text-sm">/ month</span>
             </div>
             <ul className="space-y-2.5 text-sm">
               <li className="flex items-center gap-2">
-                <div className="rounded-full bg-primary/10 p-0.5">
-                  <Check className="size-3.5 text-primary" />
+                <div className="bg-primary/10 rounded-full p-0.5">
+                  <Check className="text-primary size-3.5" />
                 </div>
                 <span className="font-medium">Unlimited Daily Chapters</span>
               </li>
               <li className="flex items-center gap-2">
-                <div className="rounded-full bg-primary/10 p-0.5">
-                  <Check className="size-3.5 text-primary" />
+                <div className="bg-primary/10 rounded-full p-0.5">
+                  <Check className="text-primary size-3.5" />
                 </div>
                 <span>Ad-Free Reading</span>
               </li>
               <li className="flex items-center gap-2">
-                <div className="rounded-full bg-primary/10 p-0.5">
-                  <Check className="size-3.5 text-primary" />
+                <div className="bg-primary/10 rounded-full p-0.5">
+                  <Check className="text-primary size-3.5" />
                 </div>
                 <span>Early Access to New Releases</span>
               </li>
               <li className="flex items-center gap-2">
-                <div className="rounded-full bg-primary/10 p-0.5">
-                  <Check className="size-3.5 text-primary" />
+                <div className="bg-primary/10 rounded-full p-0.5">
+                  <Check className="text-primary size-3.5" />
                 </div>
                 <span>High-Quality Image Servers</span>
               </li>
             </ul>
           </CardContent>
           <CardFooter className="flex flex-col gap-4">
-            <h3 className="text-lg font-semibold text-center">Upgrade to Pro</h3>
-            <p className="text-sm text-muted-foreground text-center">Contact admin to buy Pro</p>
+            <h3 className="text-center text-lg font-semibold">Upgrade to Pro</h3>
+            <p className="text-muted-foreground text-center text-sm">Contact admin to buy Pro</p>
             <div className="flex gap-2">
               <Button
-                className="flex-1 h-10 rounded-lg font-semibold bg-[#0088cc] text-white hover:bg-[#0088cc]/90"
+                className="h-10 flex-1 rounded-lg bg-[#0088cc] font-semibold text-white hover:bg-[#0088cc]/90"
                 variant="default"
               >
                 <RiTelegramLine size={24} />
@@ -129,7 +129,7 @@ export default function PlanPage() {
                 </Link>
               </Button>
               <Button
-                className="flex-1 h-10 rounded-lg font-semibold bg-[#25D366] text-white hover:bg-[#25D366]/90"
+                className="h-10 flex-1 rounded-lg bg-[#25D366] font-semibold text-white hover:bg-[#25D366]/90"
                 variant="default"
               >
                 <FaWhatsapp size={24} />
@@ -143,8 +143,8 @@ export default function PlanPage() {
         </Card>
 
         {/* Footer info */}
-        <div className="text-center space-y-2 pb-8">
-          <p className="text-xs text-muted-foreground">Payments are processed securely. You can cancel anytime.</p>
+        <div className="space-y-2 pb-8 text-center">
+          <p className="text-muted-foreground text-xs">Payments are processed securely. You can cancel anytime.</p>
         </div>
       </div>
     </div>

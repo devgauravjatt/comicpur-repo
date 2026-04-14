@@ -10,10 +10,10 @@ export default function Page() {
       <div className="w-full max-w-100 space-y-10">
         <div className="flex flex-col items-center text-center">
           <div className="space-y-3">
-            <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            <h1 className="text-foreground text-3xl font-bold tracking-tight sm:text-4xl">
               Welcome to {siteConfig.meta.name}
             </h1>
-            <p className="mx-auto max-w-[320px] text-balance text-sm text-muted-foreground sm:text-base">
+            <p className="text-muted-foreground mx-auto max-w-[320px] text-sm text-balance sm:text-base">
               Sign in to your account to continue discovering and sharing amazing comics.
             </p>
           </div>
@@ -25,7 +25,7 @@ export default function Page() {
               <Button
                 variant={'outline'}
                 size="lg"
-                className="w-full gap-3 font-semibold transition-all hover:bg-muted hover:shadow-md active:scale-[0.98]"
+                className="hover:bg-muted w-full gap-3 font-semibold transition-all hover:shadow-md active:scale-[0.98]"
               >
                 <Image src="/assets/images/google-icon.webp" alt="Google" width={20} height={20} className="shrink-0" />
                 Continue with Google
@@ -35,25 +35,25 @@ export default function Page() {
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-muted/60" />
+              <span className="border-muted/60 w-full border-t" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-4 text-muted-foreground/80 font-medium">Secure Authentication</span>
+              <span className="bg-background text-muted-foreground/80 px-4 font-medium">Secure Authentication</span>
             </div>
           </div>
 
-          <p className="px-4 text-center text-xs leading-relaxed text-muted-foreground/70 sm:px-8">
+          <p className="text-muted-foreground/70 px-4 text-center text-xs leading-relaxed sm:px-8">
             By signing in, you agree to our{' '}
             <Link
               href="/terms"
-              className="font-medium underline underline-offset-4 hover:text-primary transition-colors"
+              className="hover:text-primary font-medium underline underline-offset-4 transition-colors"
             >
               Terms of Service
             </Link>{' '}
             and{' '}
             <Link
               href="/privacy"
-              className="font-medium underline underline-offset-4 hover:text-primary transition-colors"
+              className="hover:text-primary font-medium underline underline-offset-4 transition-colors"
             >
               Privacy Policy
             </Link>

@@ -3,10 +3,12 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import ChaptersBox from '@/components/chapters-box';
 import { Separator } from '@/components/ui/separator';
-import { BookOpen, Calendar, Heart, Share2, Star, TrendingUp } from 'lucide-react';
+import { BookOpen, Calendar, Heart, Star, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
+import ShareButton from '@/components/ShareButton';
+import { translateComicTitle } from '@/lib/translate';
 
 async function getComicDetail(slug: string) {
   try {
@@ -27,19 +29,20 @@ async function getComicDetail(slug: string) {
 export default async function ComicPage({ params }: { params: { slug: string } }) {
   const { slug } = await params;
   const comicData = await getComicDetail(slug);
-  console.log('🚀 ~ ComicPage ~ comicData :- ', comicData);
 
   if (!comicData) {
     notFound();
   }
 
+  const translatedTitle = await translateComicTitle(comicData.comic.title);
+
   return (
     <div className="flex flex-col gap-8 pb-10">
       {/* Mobile-First Header / Hero */}
-      <section className="relative w-full overflow-hidden rounded-3xl bg-muted/30 p-4 md:p-8">
-        <div className="flex flex-col md:flex-row gap-6 md:gap-10">
+      <section className="bg-muted/30 relative w-full overflow-hidden rounded-3xl p-4 md:p-8">
+        <div className="flex flex-col gap-6 md:flex-row md:gap-10">
           {/* Cover Image */}
-          <div className="relative aspect-3/4 w-full max-w-60 mx-auto md:mx-0 shrink-0 overflow-hidden rounded-2xl shadow-xl">
+          <div className="relative mx-auto aspect-3/4 w-full max-w-60 shrink-0 overflow-hidden rounded-2xl shadow-xl md:mx-0">
             <Image
               src={comicData.comic.coverImage}
               alt={comicData.comic.title}
@@ -49,15 +52,15 @@ export default async function ComicPage({ params }: { params: { slug: string } }
               sizes="(max-width: 768px) 240px, 300px"
             />
             {comicData.comic.isAdult && (
-              <Badge variant="destructive" className="absolute top-3 right-3 uppercase font-black px-2 py-0.5">
+              <Badge variant="destructive" className="absolute top-3 right-3 px-2 py-0.5 font-black uppercase">
                 18+
               </Badge>
             )}
           </div>
 
           {/* Info */}
-          <div className="flex flex-col flex-1 gap-4 text-center md:text-left">
-            <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 mb-1">
+          <div className="flex flex-1 flex-col gap-4 text-center md:text-left">
+            <div className="mb-1 flex flex-wrap items-center justify-center gap-2 md:justify-start">
               <Link href={`/categories/${comicData.categorySlug}`}>
                 <Badge variant="secondary" className="bg-primary/10 text-primary hover:bg-primary/20 border-none px-3">
                   {comicData.categoryName}
@@ -68,11 +71,11 @@ export default async function ComicPage({ params }: { params: { slug: string } }
               </Badge>
             </div>
 
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-black comicpur-text-gradient py-2 tracking-tight leading-tight">
-              {comicData.comic.title}
+            <h1 className="comicpur-text-gradient py-2 text-lg leading-tight font-black tracking-tight md:text-3xl lg:text-4xl">
+              {translatedTitle}
             </h1>
 
-            <div className="flex flex-wrap items-center justify-center md:justify-start gap-6 text-sm text-muted-foreground font-medium mt-2">
+            <div className="text-muted-foreground mt-2 flex flex-wrap items-center justify-center gap-6 text-sm font-medium md:justify-start">
               <div className="flex items-center gap-1.5">
                 <Star className="size-4 fill-amber-500 text-amber-500" />
                 <span className="text-foreground font-bold">4.8</span>
@@ -84,12 +87,12 @@ export default async function ComicPage({ params }: { params: { slug: string } }
                 <span>Chapters</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <TrendingUp className="size-4 text-primary" />
+                <TrendingUp className="text-primary size-4" />
                 <span>#5 Trending</span>
               </div>
             </div>
             {/* Reusable row component for meta info */}
-            <div className="flex justify-between text-muted-foreground text-sm items-center py-2 border-b border-muted">
+            <div className="text-muted-foreground border-muted flex items-center justify-between border-b py-2 text-sm">
               <span className="flex items-center gap-2">
                 <Calendar className="size-4" />
                 Released
@@ -98,7 +101,7 @@ export default async function ComicPage({ params }: { params: { slug: string } }
                 {new Date(comicData.comic.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}
               </span>
             </div>
-            <div className="flex justify-between text-muted-foreground text-sm items-center py-2 border-b border-muted">
+            <div className="text-muted-foreground border-muted flex items-center justify-between border-b py-2 text-sm">
               <span className="flex items-center gap-2">
                 <Calendar className="size-4" />
                 Last Update
@@ -111,35 +114,33 @@ export default async function ComicPage({ params }: { params: { slug: string } }
               </span>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-3 mt-6 md:mt-8">
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row md:mt-8">
               <Link href={`/comic/${comicData.comic.slug}/1`} className="flex-1">
                 <Button
                   size="lg"
-                  className="w-full rounded-full h-12 md:h-14 text-base font-bold shadow-lg shadow-primary/20"
+                  className="shadow-primary/20 h-12 w-full rounded-full text-base font-bold shadow-lg md:h-14"
                 >
                   Read Now
                 </Button>
               </Link>
               <div className="flex gap-3">
-                <Button size="lg" variant="secondary" className="flex-1 sm:flex-none rounded-full h-12 md:h-14 px-6">
-                  <Heart className="size-5 mr-2" />
+                <Button size="lg" variant="secondary" className="h-12 flex-1 rounded-full px-6 sm:flex-none md:h-14">
+                  <Heart className="mr-2 size-5" />
                   Save
                 </Button>
-                <Button size="lg" variant="outline" className="flex-1 sm:flex-none rounded-full h-12 md:h-14 px-6">
-                  <Share2 className="size-5" />
-                </Button>
+                <ShareButton title={translatedTitle} text={comicData.comic.description} />
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 px-1 md:px-0">
+      <div className="grid grid-cols-1 gap-8 px-1 md:px-0 lg:grid-cols-3">
         {/* Main Content */}
-        <div className="lg:col-span-2 space-y-8">
+        <div className="space-y-8 lg:col-span-2">
           <section>
-            <h2 className="text-xl font-bold mb-4 flex items-center gap-2">Description</h2>
-            <p className="text-muted-foreground leading-relaxed text-sm md:text-base whitespace-pre-wrap">
+            <h2 className="mb-4 flex items-center gap-2 text-xl font-bold">Description</h2>
+            <p className="text-muted-foreground text-sm leading-relaxed whitespace-pre-wrap md:text-base">
               {comicData.comic.description || 'No description available.'}
             </p>
           </section>

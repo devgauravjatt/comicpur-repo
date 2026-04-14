@@ -87,24 +87,24 @@ export default function ComicsTable() {
   };
 
   return (
-    <div className="p-4 md:p-6 space-y-6">
+    <div className="space-y-6 p-4 md:p-6">
       <h2 className="text-2xl font-bold">Manage Comics</h2>
       {/* Search */}
-      <div className="relative max-w-md w-full">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+      <div className="relative w-full max-w-md">
+        <Search className="text-muted-foreground pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
         <Input
           placeholder="Search comics..."
           value={search}
           onChange={handleSearchChange}
-          className="pl-10 pr-10 h-11 rounded-xl"
+          className="h-11 rounded-xl pr-10 pl-10"
         />
         {search && (
           <button
             onClick={clearSearch}
-            className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-muted rounded-full transition-colors"
+            className="hover:bg-muted absolute top-1/2 right-3 -translate-y-1/2 rounded-full p-1 transition-colors"
             title="Clear search"
           >
-            <X className="w-4 h-4 text-muted-foreground" />
+            <X className="text-muted-foreground h-4 w-4" />
           </button>
         )}
       </div>
@@ -114,43 +114,43 @@ export default function ComicsTable() {
         {/* Mobile View */}
         <div className="grid grid-cols-1 gap-4 md:hidden">
           {isLoading ? (
-            <div className="flex flex-col items-center justify-center py-12 gap-2 bg-background border rounded-2xl">
-              <Spinner className="size-8 text-primary" />
-              <p className="text-sm text-muted-foreground">Loading comics...</p>
+            <div className="bg-background flex flex-col items-center justify-center gap-2 rounded-2xl border py-12">
+              <Spinner className="text-primary size-8" />
+              <p className="text-muted-foreground text-sm">Loading comics...</p>
             </div>
           ) : comics.length > 0 ? (
             comics.map((comic) => (
-              <Card key={comic.id} className="rounded-2xl border overflow-hidden">
-                <CardHeader className="p-4 pb-3 space-y-2">
+              <Card key={comic.id} className="overflow-hidden rounded-2xl border">
+                <CardHeader className="space-y-2 p-4 pb-3">
                   <div className="flex items-start justify-between gap-2">
-                    <CardTitle className="text-base font-semibold line-clamp-2">{comic.title}</CardTitle>
+                    <CardTitle className="line-clamp-2 text-base font-semibold">{comic.title}</CardTitle>
                     <span
-                      className={`px-2 py-0.5 rounded-full text-[10px] font-medium ${comic.published ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}
+                      className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${comic.published ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}
                     >
                       {comic.published ? 'Published' : 'Draft'}
                     </span>
                   </div>
-                  <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                  <div className="text-muted-foreground flex items-center gap-3 text-xs">
                     <span>{dayjs(comic.createdAt).format('MMM DD, YYYY')}</span>
-                    <span className="w-1 h-1 rounded-full bg-muted-foreground/40" />
-                    <span className="uppercase tracking-wider">{comic.languageCode}</span>
+                    <span className="bg-muted-foreground/40 h-1 w-1 rounded-full" />
+                    <span className="tracking-wider uppercase">{comic.languageCode}</span>
                     {comic.isAdult && (
                       <>
-                        <span className="w-1 h-1 rounded-full bg-muted-foreground/40" />
-                        <span className="text-rose-600 dark:text-rose-400 font-medium">18+</span>
+                        <span className="bg-muted-foreground/40 h-1 w-1 rounded-full" />
+                        <span className="font-medium text-rose-600 dark:text-rose-400">18+</span>
                       </>
                     )}
                   </div>
                 </CardHeader>
-                <CardFooter className="p-4 pt-2 flex flex-wrap gap-3">
-                  <Button size="sm" variant="secondary" className="h-11 px-4 rounded-xl flex-1 min-w-25">
+                <CardFooter className="flex flex-wrap gap-3 p-4 pt-2">
+                  <Button size="sm" variant="secondary" className="h-11 min-w-25 flex-1 rounded-xl px-4">
                     Add Chapter
                   </Button>
-                  <Button size="sm" variant="outline" className="h-11 px-4 rounded-xl flex-1 min-w-25">
+                  <Button size="sm" variant="outline" className="h-11 min-w-25 flex-1 rounded-xl px-4">
                     Manage Chapter
                   </Button>
                   <Link href={`/admin/update/comic/${comic.slug}`}>
-                    <Button size="sm" variant="default" className="h-11 px-4 rounded-xl w-full mt-1">
+                    <Button size="sm" variant="default" className="mt-1 h-11 w-full rounded-xl px-4">
                       Edit
                     </Button>
                   </Link>
@@ -158,12 +158,12 @@ export default function ComicsTable() {
               </Card>
             ))
           ) : (
-            <div className="text-center py-12 bg-background border rounded-2xl">No comics found</div>
+            <div className="bg-background rounded-2xl border py-12 text-center">No comics found</div>
           )}
         </div>
 
         {/* Desktop View */}
-        <div className="hidden md:block rounded-2xl border bg-background overflow-hidden">
+        <div className="bg-background hidden overflow-hidden rounded-2xl border md:block">
           <Table>
             <TableHeader>
               <TableRow className="hover:bg-transparent">
@@ -178,10 +178,10 @@ export default function ComicsTable() {
             <TableBody>
               {isLoading ? (
                 <TableRow>
-                  <TableCell colSpan={6} className="text-center py-12">
+                  <TableCell colSpan={6} className="py-12 text-center">
                     <div className="flex flex-col items-center gap-2">
-                      <Spinner className="size-8 text-primary" />
-                      <p className="text-sm text-muted-foreground">Loading comics...</p>
+                      <Spinner className="text-primary size-8" />
+                      <p className="text-muted-foreground text-sm">Loading comics...</p>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -194,14 +194,14 @@ export default function ComicsTable() {
                     <TableCell className="text-muted-foreground">{comic.isAdult ? 'Yes' : 'No'}</TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
-                        <Button size="sm" variant="secondary" className="h-9 px-4 rounded-lg">
+                        <Button size="sm" variant="secondary" className="h-9 rounded-lg px-4">
                           Add Chapter
                         </Button>
-                        <Button size="sm" variant="outline" className="h-9 px-4 rounded-lg">
+                        <Button size="sm" variant="outline" className="h-9 rounded-lg px-4">
                           Manage Chapter
                         </Button>
                         <Link href={`/admin/update/comic/${comic.slug}`}>
-                          <Button size="sm" variant="default" className="h-9 px-4 rounded-lg">
+                          <Button size="sm" variant="default" className="h-9 rounded-lg px-4">
                             Edit
                           </Button>
                         </Link>
@@ -211,7 +211,7 @@ export default function ComicsTable() {
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={3} className="text-center py-12">
+                  <TableCell colSpan={3} className="py-12 text-center">
                     No comics found
                   </TableCell>
                 </TableRow>

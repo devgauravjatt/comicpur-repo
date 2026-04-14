@@ -33,17 +33,17 @@ export default function ComicsBox({ slug, initialComics }: { slug: string; initi
 
   return (
     <InfiniteScroll
-      className="[&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+      className="[-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       dataLength={comics.length}
       next={loadMore}
       hasMore={hasMore}
       loader={
-        <div className="flex justify-center mt-8 py-4">
+        <div className="mt-8 flex justify-center py-4">
           <RowLoader title="Loading more comics..." />
         </div>
       }
       endMessage={
-        <div className="flex justify-center mt-8 py-4 border-t">
+        <div className="mt-8 flex justify-center border-t py-4">
           <p className="text-muted-foreground font-medium">Yay! You have seen it all</p>
         </div>
       }

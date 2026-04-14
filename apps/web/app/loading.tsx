@@ -7,7 +7,7 @@ function Spinner() {
 
 export default function Loading() {
   return (
-    <div className="h-full flex items-center justify-center gap-2">
+    <div className="flex h-full items-center justify-center gap-2">
       <Spinner />
       <span className="sr-only">Loading…</span>
     </div>

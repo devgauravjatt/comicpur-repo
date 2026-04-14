@@ -8,6 +8,7 @@
   "useTabs": false,
   "bracketSpacing": true,
   "sortPackageJson": false,
+  "sortTailwindcss": true,
   "ignorePatterns": [
     "node_modules",
     ".pnp",
