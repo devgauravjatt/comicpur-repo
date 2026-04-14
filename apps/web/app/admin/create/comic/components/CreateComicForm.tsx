@@ -6,8 +6,8 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
-import { updateComicAction } from '@/app/actions';
-import type { updateComicActionBody } from '@/app/actions';
+import { createComicAction } from '@/app/actions';
+import type { createComicActionBody } from '@/app/actions';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { siteConfig } from '@/lib/site-config';
@@ -21,24 +21,31 @@ import {
   MultiSelectValue,
 } from '@/components/ui/multi-select';
 
-interface UpdateComicFormProps {
-  initialData: updateComicActionBody;
+interface CreateComicFormProps {
   categories: { id: number; name: string }[];
 }
 
-export default function UpdateComicForm({ initialData, categories }: UpdateComicFormProps) {
+export default function CreateComicForm({ categories }: CreateComicFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const router = useRouter();
 
-  const [formData, setFormData] = useState({
-    ...initialData,
+  const [formData, setFormData] = useState<createComicActionBody>({
+    title: '',
+    description: '',
+    coverImage: '',
+    languageCode: 'hi',
+    slug: '',
+    categoryIds: [],
+    published: true,
+    isAdult: false,
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name } = e.target;
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
+      [name]: value,
     }));
     if (errors[name]) {
       setErrors((prev) => {
@@ -75,7 +82,7 @@ export default function UpdateComicForm({ initialData, categories }: UpdateComic
     setIsLoading(true);
     setErrors({});
     try {
-      const result = await updateComicAction(formData);
+      const result = await createComicAction(formData);
 
       if (!result) {
         toast.error('Something went wrong. Please try again.');
@@ -83,7 +90,7 @@ export default function UpdateComicForm({ initialData, categories }: UpdateComic
       }
 
       if (result.success) {
-        toast.success(result.message || 'Comic updated successfully');
+        toast.success(result.message || 'Comic created successfully');
         router.refresh();
       } else {
         if ('errors' in result && result.errors) {
@@ -95,11 +102,11 @@ export default function UpdateComicForm({ initialData, categories }: UpdateComic
           setErrors(newErrors);
           toast.error('Please fix the errors in the form.');
         } else if ('error' in result) {
-          toast.error(result.error || 'Failed to update comic');
+          toast.error(result.error || 'Failed to create comic');
         }
       }
-    } catch (error) {
-      console.error('Update error:', error);
+      // oxlint-disable-next-line no-unused-vars
+    } catch (_error) {
       toast.error('An unexpected error occurred.');
     } finally {
       setIsLoading(false);
@@ -227,7 +234,7 @@ export default function UpdateComicForm({ initialData, categories }: UpdateComic
       </div>
 
       <Button type="submit" className="w-full" disabled={isLoading}>
-        {isLoading ? 'Updating...' : 'Update Comic'}
+        {isLoading ? 'Creating...' : 'Create Comic'}
       </Button>
     </form>
   );

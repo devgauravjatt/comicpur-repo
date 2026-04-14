@@ -143,13 +143,17 @@ export default function ComicsTable() {
                   </div>
                 </CardHeader>
                 <CardFooter className="flex flex-wrap gap-3 p-4 pt-2">
-                  <Button size="sm" variant="secondary" className="h-11 min-w-25 flex-1 rounded-xl px-4">
-                    Add Chapter
-                  </Button>
-                  <Button size="sm" variant="outline" className="h-11 min-w-25 flex-1 rounded-xl px-4">
-                    Manage Chapter
-                  </Button>
-                  <Link href={`/admin/update/comic/${comic.slug}`}>
+                  <Link href={`/admin/create/chapter/${comic.slug}`} className="flex-1">
+                    <Button size="sm" variant="secondary" className="h-11 w-full rounded-xl px-4">
+                      Add Chapter
+                    </Button>
+                  </Link>
+                  <Link href={`/admin/chapters/${comic.slug}`} className="flex-1">
+                    <Button size="sm" variant="outline" className="h-11 w-full rounded-xl px-4">
+                      Manage Chapter
+                    </Button>
+                  </Link>
+                  <Link href={`/admin/update/comic/${comic.slug}`} className="w-full">
                     <Button size="sm" variant="default" className="mt-1 h-11 w-full rounded-xl px-4">
                       Edit
                     </Button>
@@ -194,12 +198,16 @@ export default function ComicsTable() {
                     <TableCell className="text-muted-foreground">{comic.isAdult ? 'Yes' : 'No'}</TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
-                        <Button size="sm" variant="secondary" className="h-9 rounded-lg px-4">
-                          Add Chapter
-                        </Button>
-                        <Button size="sm" variant="outline" className="h-9 rounded-lg px-4">
-                          Manage Chapter
-                        </Button>
+                        <Link href={`/admin/create/chapter/${comic.slug}`}>
+                          <Button size="sm" variant="secondary" className="h-9 rounded-lg px-4">
+                            Add Chapter
+                          </Button>
+                        </Link>
+                        <Link href={`/admin/chapters/${comic.slug}`}>
+                          <Button size="sm" variant="outline" className="h-9 rounded-lg px-4">
+                            Manage Chapter
+                          </Button>
+                        </Link>
                         <Link href={`/admin/update/comic/${comic.slug}`}>
                           <Button size="sm" variant="default" className="h-9 rounded-lg px-4">
                             Edit

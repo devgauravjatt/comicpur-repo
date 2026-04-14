@@ -99,7 +99,7 @@ export default function RootLayout({
           <Suspense fallback={<NavLoding />}>
             <BottomNav />
           </Suspense>
-          <Toaster position="top-center" richColors />
+          <Toaster position="top-center" />
         </TooltipProvider>
       </body>
     </html>

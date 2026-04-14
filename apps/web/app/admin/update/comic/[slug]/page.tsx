@@ -1,6 +1,6 @@
 import honoClient from '@/hono/client';
 import { notFound } from 'next/navigation';
-import { UpdateComicForm } from './components/UpdateComicForm';
+import UpdateComicForm from './components/UpdateComicForm';
 
 async function getCategores() {
   const response = await honoClient.api.v1.public.categories.$get().then((res) => res.json());

@@ -1,5 +1,7 @@
+// oxlint-disable no-unused-vars
 'use server';
 
+import type { InferRequestType, InferResponseType } from 'hono/client';
 import honoClient from '@/hono/client';
 import { cookies } from 'next/headers';
 
@@ -17,7 +19,6 @@ export async function getComicChaptersAction(comicId: number, page: number = 1) 
 
     return data;
   } catch (error) {
-    console.log('🚀 getComicChaptersAction error :- ', error);
     return {
       success: false,
       error: 'Failed to fetch comic chapters',
@@ -48,7 +49,6 @@ export async function getComicesByCategorySlug(slug: string, page: number = 1) {
 }
 
 export async function comicsListAndSearchAction(page: number = 1, search?: string) {
-  console.log('🚀 ~ comicsListAndSearchAction ~ page: search :- ', page, search);
   await new Promise((resolve) => setTimeout(resolve, 2000));
   const token = (await cookies()).get('token')?.value;
   try {
@@ -71,17 +71,44 @@ export async function comicsListAndSearchAction(page: number = 1, search?: strin
     if (!data.success || !data.data) return null;
     return data;
   } catch (error) {
-    console.log('🚀 comicsListAndSearchAction error :- ', error);
     return null;
   }
 }
 
-import type { InferRequestType } from 'hono/client';
+const chaptersListAndActionGet = honoClient.api.v1.public.chapters.$get;
+export type chaptersListAndActionBody = InferResponseType<typeof chaptersListAndActionGet>;
 
-const $put = honoClient.api.v1.admin.comics.$put;
-export type ReqType = InferRequestType<typeof $put>['json'];
+export async function chaptersListAndAction(page: number = 1, comicId: number) {
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+  const token = (await cookies()).get('token')?.value;
+  try {
+    const response = await honoClient.api.v1.public.chapters.$get(
+      {
+        query: {
+          page: page.toString(),
+          comicId,
+        },
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
 
-export async function updateComicAction(req: ReqType) {
+    const data = await response.json();
+
+    if (!data.success || !data.data) return null;
+    return data;
+  } catch (_error) {
+    return null;
+  }
+}
+
+const updateComicPut = honoClient.api.v1.admin.comics.$put;
+export type updateComicActionBody = InferRequestType<typeof updateComicPut>['json'];
+
+export async function updateComicAction(req: updateComicActionBody) {
   const token = (await cookies()).get('token')?.value;
   try {
     const response = await honoClient.api.v1.admin.comics.$put(
@@ -99,7 +126,124 @@ export async function updateComicAction(req: ReqType) {
 
     return data;
   } catch (error) {
-    console.log('🚀 updateComicAction error :- ', error);
+    return null;
+  }
+}
+
+export async function deleteChapterAction(id: number) {
+  const token = (await cookies()).get('token')?.value;
+  try {
+    const response = await honoClient.api.v1.admin.chapters[':id'].$delete(
+      {
+        param: {
+          id: id.toString(),
+        },
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    return null;
+  }
+}
+
+export async function getLastChapterNumberAction(comicId: number) {
+  const token = (await cookies()).get('token')?.value;
+  try {
+    const response = await honoClient.api.v1.admin.chapters['count']['last'][':comicId'].$get(
+      {
+        param: {
+          comicId: comicId.toString(),
+        },
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    return null;
+  }
+}
+
+export async function createChapterAction(req: {
+  title: string;
+  comicId: number;
+  chapterNumber: number;
+  images: string[];
+}) {
+  const token = (await cookies()).get('token')?.value;
+  try {
+    const response = await honoClient.api.v1.admin.chapters.$post(
+      {
+        json: req,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    const data = await response.json();
+    console.log('🚀 ~ createChapterAction ~ data :- ', data);
+
+    return data;
+  } catch (error) {
+    return null;
+  }
+}
+
+export async function getComicBySlugAction(slug: string) {
+  try {
+    const response = await honoClient.api.v1.public.comics.$get({
+      query: {
+        slug,
+      },
+    });
+
+    const data = await response.json();
+
+    if (!data.success) return null;
+    return data;
+  } catch (error) {
+    return null;
+  }
+}
+
+const createComicPost = honoClient.api.v1.admin.comics.$post;
+export type createComicActionBody = InferRequestType<typeof createComicPost>['json'];
+
+export async function createComicAction(req: createComicActionBody) {
+  const token = (await cookies()).get('token')?.value;
+  try {
+    const response = await honoClient.api.v1.admin.comics.$post(
+      {
+        json: req,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
     return null;
   }
 }
