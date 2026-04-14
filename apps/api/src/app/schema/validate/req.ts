@@ -108,7 +108,7 @@ export const updateCategoriesBodySchema = z
 
 // Schema for validating the request body of the /admin/chapters POST endpoint.
 export const addChaptersBodySchema = z.object({
-	title: z.string().min(5, 'Title is required to be at least 10 characters long'),
+	title: z.string().min(3, 'Title is required to be at least 3 characters long'),
 	comicId: z.number().int().positive('Comic ID is required to be a valid ID'),
 	chapterNumber: z.number().int().positive('Chapter number is required to be a valid number'),
 	images: z.array(z.string().min(11, 'Image is required to be a valid URL').url()),
@@ -118,7 +118,7 @@ export const addChaptersBodySchema = z.object({
 export const updateChaptersBodySchema = z
 	.object({
 		id: z.number().int().positive('ID is required to be a valid ID'),
-		title: z.string().min(5, 'Title is required to be at least 10 characters long').optional(),
+		title: z.string().min(3, 'Title is required to be at least 3 characters long').optional(),
 		images: z.array(z.string().min(11, 'Image is required to be a valid URL').url()).optional(),
 	})
 	.refine(
