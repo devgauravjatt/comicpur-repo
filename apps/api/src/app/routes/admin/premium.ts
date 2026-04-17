@@ -55,7 +55,7 @@ const premiumRouter = new Hono<{ Variables: Variables }>()
 			'json',
 			z.object({
 				id: z.coerce.number('id is number required'),
-				active: z.boolean('active is required'),
+				active: z.coerce.boolean('active is boolean required'),
 			}),
 		),
 		async (c) => {
