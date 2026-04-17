@@ -1,4 +1,4 @@
-import { and, eq } from 'drizzle-orm';
+import { and, count, eq } from 'drizzle-orm';
 import type z from 'zod';
 import { premiumTable } from '@/app/schema/db/index.js';
 import type { addPremiumBodySchema } from '@/app/schema/validate/req.js';
@@ -8,6 +8,57 @@ import dateHelper from '@/lib/dateHelper.js';
 type AddPremiumBody = z.infer<typeof addPremiumBodySchema>;
 
 export const premiumService = {
+	async getPremiumSubscriptions({
+		active,
+		userMail,
+		page = 1,
+	}: {
+		active?: boolean;
+		userMail?: string;
+		page?: number;
+	}) {
+		const ITEMS_PER_PAGE = 10;
+		const offset = ITEMS_PER_PAGE * (page - 1);
+
+		let userId: number | null = null;
+
+		if (userMail) {
+			const user = await db.query.usersTable.findFirst({
+				where: (users, { eq }) => eq(users.email, userMail),
+			});
+			if (!user) {
+				throw new Error('User not found');
+			}
+			userId = user.id;
+		}
+
+		const result = await db
+			.select()
+			.from(premiumTable)
+			.where(
+				and(
+					userId ? eq(premiumTable.userId, userId) : undefined,
+					typeof active === 'boolean' ? eq(premiumTable.active, active) : undefined,
+				),
+			)
+			.limit(ITEMS_PER_PAGE)
+			.offset(offset);
+
+		const [{ count: total }] = await db
+			.select({ count: count() })
+			.from(premiumTable)
+			.where(
+				and(
+					userId ? eq(premiumTable.userId, userId) : undefined,
+					active ? eq(premiumTable.active, active) : undefined,
+				),
+			);
+		return {
+			premiumSubscriptions: result,
+			totalPages: Math.ceil(total / ITEMS_PER_PAGE),
+		};
+	},
+
 	/**
 	 * Create premium subscription
 	 * @param data - Premium subscription data
@@ -33,19 +84,28 @@ export const premiumService = {
 	 * Inactive premium subscription
 	 * @param userMail - User mail
 	 */
-	async inactivePremiumSubscription(userMail: string) {
-		const user = await db.query.usersTable.findFirst({
-			where: (users, { eq }) => eq(users.email, userMail),
-		});
-		if (!user) {
-			throw new Error('User not found');
-		}
-		// get premium subscription by user ID
+	async inactivePremiumSubscription(id: number) {
+		await db
+			.update(premiumTable)
+			.set({ active: false })
+			.where(and(eq(premiumTable.id, id), eq(premiumTable.active, true)));
+	},
+
+	/**
+	 * re active premium subscription
+	 * @param userMail - User mail
+	 */
+	async reActivePremiumSubscription(id: number) {
 		const result = await db.query.premiumTable.findFirst({
-			where: and(eq(premiumTable.userId, user.id), eq(premiumTable.active, true)),
+			where: and(eq(premiumTable.id, id), eq(premiumTable.active, false)),
 		});
+
 		if (result) {
-			await db.update(premiumTable).set({ active: false }).where(eq(premiumTable.id, result.id));
+			const isExpired = result.expiryDate < new Date();
+			if (isExpired) {
+				return;
+			}
+			await db.update(premiumTable).set({ active: true }).where(eq(premiumTable.id, result.id));
 		}
 	},
 
