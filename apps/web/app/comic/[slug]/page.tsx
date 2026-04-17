@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import ShareButton from '@/components/ShareButton';
-import { translateComicTitle } from '@/lib/translate';
+import { translateComicTitleAction } from '@/app/actions';
 
 async function getComicDetail(slug: string) {
   try {
@@ -34,7 +34,7 @@ export default async function ComicPage({ params }: { params: { slug: string } }
     notFound();
   }
 
-  const translatedTitle = await translateComicTitle(comicData.comic.title);
+  const translatedTitle = await translateComicTitleAction(comicData.comic.title);
 
   return (
     <div className="flex flex-col gap-8 pb-10">

@@ -4,27 +4,12 @@ import { Comic } from '@/types/comic';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { BookOpen, Star, Calendar } from 'lucide-react';
-
-import { IsNewBadge } from './is-new-badge';
 import { Suspense } from 'react';
-import { translateComicTitle } from '@/lib/translate';
+import TranslatedTitle from './TranslatedTitle';
+import { IsComingBadge, IsNewBadge } from './comic-card-badges';
 
 interface ComicCardProps {
   comic: Comic;
-}
-
-async function TranslatedTitle({ comicTitle }: { comicTitle: string }) {
-  const title = await translateComicTitle(comicTitle);
-  const lines = title.split('-');
-  return (
-    <>
-      {' '}
-      <CardTitle className="group-hover:text-primary line-clamp-1 text-sm leading-tight font-bold transition-colors">
-        {lines[0]}
-      </CardTitle>
-      {lines[1] ? <span className="text-text-200 text-sm">&ldquo;{lines[1]}&rdquo;</span> : ''}
-    </>
-  );
 }
 
 export function ComicCard({ comic }: ComicCardProps) {
@@ -52,6 +37,7 @@ export function ComicCard({ comic }: ComicCardProps) {
           {/* Badges */}
           <div className="absolute top-2 left-2 flex flex-col gap-1">
             <IsNewBadge createdAt={comic.createdAt} />
+            {comic.chaptersCount === 0 && <IsComingBadge />}
 
             <Badge
               variant="outline"
@@ -84,7 +70,13 @@ export function ComicCard({ comic }: ComicCardProps) {
         </div>
 
         <CardHeader className="p-3 pt-2">
-          <Suspense fallback={<span className="text-text-200 text-sm">{comic.title}</span>}>
+          <Suspense
+            fallback={
+              <CardTitle className="group-hover:text-primary line-clamp-1 text-sm leading-tight font-bold transition-colors">
+                {comic.title}
+              </CardTitle>
+            }
+          >
             <TranslatedTitle comicTitle={comic.title} />
           </Suspense>
           <div className="mt-1 flex items-center justify-between">

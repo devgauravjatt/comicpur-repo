@@ -23,3 +23,14 @@ export function IsNewBadge({ createdAt }: IsNewBadgeProps) {
     </Badge>
   );
 }
+
+export function IsComingBadge() {
+  return (
+    <Badge
+      variant="outline"
+      className="h-5 border-none bg-gray-500 px-1.5 text-[10px] font-bold text-white hover:bg-gray-600"
+    >
+      Coming
+    </Badge>
+  );
+}

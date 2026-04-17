@@ -1,5 +1,6 @@
 // oxlint-disable no-unused-vars
 'use server';
+import translate from 'translate';
 
 import type { InferRequestType, InferResponseType } from 'hono/client';
 import honoClient from '@/hono/client';
@@ -245,5 +246,14 @@ export async function createComicAction(req: createComicActionBody) {
     return data;
   } catch (error) {
     return null;
+  }
+}
+
+export async function translateComicTitleAction(comicTitle: string) {
+  try {
+    const res = await translate(comicTitle, { from: 'en', to: 'hi' });
+    return res ? `${comicTitle} - ${res}` : comicTitle;
+  } catch (_error) {
+    return comicTitle;
   }
 }

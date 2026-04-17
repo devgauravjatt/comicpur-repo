@@ -90,7 +90,7 @@ export default function ComicsTable() {
     <div className="space-y-6 p-4 md:p-6">
       <h2 className="text-2xl font-bold">Manage Comics</h2>
       {/* Search */}
-      <div className="relative w-full max-w-md">
+      <div className="relative flex w-full max-w-md items-center justify-center gap-13">
         <Search className="text-muted-foreground pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
         <Input
           placeholder="Search comics..."
@@ -107,6 +107,9 @@ export default function ComicsTable() {
             <X className="text-muted-foreground h-4 w-4" />
           </button>
         )}
+        <Link href="/admin/create/comic" className="text-primary hover:underline">
+          <Button className="bg-primary text-white">Create New Comic</Button>
+        </Link>
       </div>
 
       {/* Mobile: Card View / Desktop: Table View */}
