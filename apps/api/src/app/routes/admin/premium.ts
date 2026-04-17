@@ -13,7 +13,10 @@ const premiumRouter = new Hono<{ Variables: Variables }>()
 			'query',
 			z.object({
 				userMail: z.string().optional(),
-				active: z.coerce.boolean().optional(),
+				active: z
+					.enum(['true', 'false'])
+					.transform((val) => val === 'true')
+					.optional(),
 				page: z.coerce.number().optional(),
 			}),
 		),
