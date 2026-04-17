@@ -76,6 +76,43 @@ export async function comicsListAndSearchAction(page: number = 1, search?: strin
   }
 }
 
+const premiumListAndActionGet = honoClient.api.v1.admin.premium.$get;
+export type premiumListAndActionBody = InferResponseType<typeof premiumListAndActionGet>;
+type premiumListAndActionRequest = InferRequestType<typeof premiumListAndActionGet>;
+
+export async function premiumListAndSearchAction({
+  active,
+  page = '1',
+  userMail,
+}: premiumListAndActionRequest['query']) {
+  console.log('🚀 ~ premiumListAndSearchAction ~ active :- ', active);
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+  const token = (await cookies()).get('token')?.value;
+  try {
+    const response = await honoClient.api.v1.admin.premium.$get(
+      {
+        query: {
+          active,
+          page: page,
+          userMail,
+        },
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    const data = await response.json();
+
+    if (!data.success || !data.data) return null;
+    return data;
+  } catch (error) {
+    return null;
+  }
+}
+
 const chaptersListAndActionGet = honoClient.api.v1.public.chapters.$get;
 export type chaptersListAndActionBody = InferResponseType<typeof chaptersListAndActionGet>;
 
