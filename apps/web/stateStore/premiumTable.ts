@@ -1,6 +1,7 @@
 import { create } from 'zustand';
-import { premiumListAndSearchAction } from '@/app/actions';
+import { premiumListAndSearchAction, togglePremiumStatusAction } from '@/app/actions';
 import { webDataType } from '@/types';
+import { toast } from 'sonner';
 
 interface PremiumTableState {
   search: string;
@@ -9,11 +10,13 @@ interface PremiumTableState {
   premiums: webDataType['premium'][];
   totalPages: number;
   isLoading: boolean;
+  isToggling: number | null;
   setSearch: (search: string) => void;
   setActive: (active: string | undefined) => void;
   setCurrentPage: (page: string) => void;
   clearFilters: () => void;
   fetchPremiums: () => Promise<void>;
+  togglePremiumStatus: (id: number, active: boolean) => Promise<void>;
 }
 
 const usePremiumTableStore = create<PremiumTableState>((set, get) => ({
@@ -23,6 +26,7 @@ const usePremiumTableStore = create<PremiumTableState>((set, get) => ({
   premiums: [],
   totalPages: 0,
   isLoading: false,
+  isToggling: null,
 
   setSearch: (search) => set({ search, currentPage: '1' }),
 
@@ -39,7 +43,7 @@ const usePremiumTableStore = create<PremiumTableState>((set, get) => ({
     try {
       const response = await premiumListAndSearchAction({
         userMail: search || undefined,
-        active: active || undefined,
+        active: active,
         page: currentPage,
       });
 
@@ -55,6 +59,22 @@ const usePremiumTableStore = create<PremiumTableState>((set, get) => ({
     } catch (err) {
       set({ premiums: [], totalPages: 0, isLoading: false });
       console.error('fetchPremiums error:', err);
+    }
+  },
+
+  togglePremiumStatus: async (id: number, active: boolean) => {
+    set({ isToggling: id });
+    try {
+      const response = await togglePremiumStatusAction(id, active);
+      if (response?.success) {
+        toast.success('Premium status updated successfully');
+        await get().fetchPremiums();
+      }
+    } catch (err) {
+      toast.error('Failed to update premium status');
+      console.error('togglePremiumStatus error:', err);
+    } finally {
+      set({ isToggling: null });
     }
   },
 }));

@@ -10,6 +10,14 @@ import { Spinner } from '@/components/ui/spinner';
 import { Card, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import {
   Pagination,
   PaginationContent,
   PaginationEllipsis,
@@ -19,6 +27,19 @@ import {
   PaginationPrevious,
 } from '@/components/ui/pagination';
 import { X, Search } from 'lucide-react';
+import dayjs from 'dayjs';
+
+function getDaysLeft(expiryDate: string | null | undefined): string {
+  if (!expiryDate) return 'No Expiry';
+
+  const expiry = dayjs(expiryDate);
+  const now = dayjs();
+  const diffDays = expiry.diff(now, 'day');
+
+  if (diffDays < 0) return 'Expired';
+  if (diffDays === 0) return 'Today';
+  return `${diffDays} day${diffDays !== 1 ? 's' : ''} left`;
+}
 
 function getPaginationRange(currentPage: number, totalPages: number): (number | string)[] {
   const delta = 1;
@@ -55,14 +76,30 @@ export default function ManagePremiumTable() {
     premiums,
     totalPages,
     isLoading,
+    isToggling,
     setSearch,
     setActive,
     setCurrentPage,
     clearFilters,
     fetchPremiums,
+    togglePremiumStatus,
   } = usePremiumTableStore();
 
   const [searchInput, setSearchInput] = useState(search);
+  const [confirmDialog, setConfirmDialog] = useState<{
+    isOpen: boolean;
+    id: number;
+    active: boolean;
+  }>({ isOpen: false, id: 0, active: false });
+
+  const handleToggleClick = (id: number, active: boolean) => {
+    setConfirmDialog({ isOpen: true, id, active });
+  };
+
+  const confirmToggle = async () => {
+    await togglePremiumStatus(confirmDialog.id, confirmDialog.active);
+    setConfirmDialog({ isOpen: false, id: 0, active: false });
+  };
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -80,8 +117,8 @@ export default function ManagePremiumTable() {
 
   return (
     <div className="space-y-6 px-4 pb-10 md:px-0">
-      <div className="flex flex-col gap-3 md:flex-row md:items-center">
-        <div className="relative flex-1">
+      <div className="flex flex-col gap-3 md:flex-row md:flex-wrap md:items-center">
+        <div className="relative min-w-50 flex-1">
           <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
           <Input
             type="text"
@@ -131,12 +168,31 @@ export default function ManagePremiumTable() {
                   </Badge>
                 </div>
               </CardHeader>
-              <CardFooter className="flex flex-col items-start gap-2 p-4 pt-2">
-                <div className="text-muted-foreground text-sm">
+              <CardFooter className="flex flex-col items-start gap-3 p-4 pt-2">
+                <div className="text-muted-foreground w-full text-sm">
                   <p>Pay Mode: {premium.payMode}</p>
                   <p>Amount: ₹{premium.amount}</p>
-                  <p>Expiry: {new Date(premium.expiryDate).toLocaleDateString()}</p>
+                  <p>Expiry: {premium.expiryDate ? new Date(premium.expiryDate).toLocaleDateString() : 'No Expiry'}</p>
+                  <p>
+                    Days Left: <span className="font-medium">{getDaysLeft(premium.expiryDate)}</span>
+                  </p>
                 </div>
+                <Button
+                  variant={premium.active ? 'destructive' : 'default'}
+                  onClick={() => handleToggleClick(premium.id, !premium.active)}
+                  disabled={isToggling === premium.id}
+                  className="h-11 w-full rounded-xl"
+                >
+                  {isToggling === premium.id ? (
+                    <>
+                      <Spinner className="mr-2 h-4 w-4" /> Processing...
+                    </>
+                  ) : premium.active ? (
+                    'Deactivate'
+                  ) : (
+                    'Activate'
+                  )}
+                </Button>
               </CardFooter>
             </Card>
           ))
@@ -154,12 +210,14 @@ export default function ManagePremiumTable() {
               <TableHead>Amount</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Expiry Date</TableHead>
+              <TableHead>Days Left</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {isLoading ? (
               <TableRow>
-                <TableCell colSpan={5} className="py-12 text-center">
+                <TableCell colSpan={7} className="py-12 text-center">
                   <div className="flex flex-col items-center gap-2">
                     <Spinner className="text-primary size-8" />
                     <p className="text-muted-foreground text-sm">Loading premium entries...</p>
@@ -180,12 +238,36 @@ export default function ManagePremiumTable() {
                       {premium.active ? 'Active' : 'Inactive'}
                     </Badge>
                   </TableCell>
-                  <TableCell>{new Date(premium.expiryDate).toLocaleDateString()}</TableCell>
+                  <TableCell>
+                    {premium.expiryDate ? new Date(premium.expiryDate).toLocaleDateString() : 'No Expiry'}
+                  </TableCell>
+                  <TableCell>
+                    <span className="font-medium">{getDaysLeft(premium.expiryDate)}</span>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <Button
+                      variant={premium.active ? 'destructive' : 'default'}
+                      size="sm"
+                      onClick={() => handleToggleClick(premium.id, !premium.active)}
+                      disabled={isToggling === premium.id}
+                      className="h-9 rounded-lg px-4"
+                    >
+                      {isToggling === premium.id ? (
+                        <>
+                          <Spinner className="mr-2 h-4 w-4" />
+                        </>
+                      ) : premium.active ? (
+                        'Deactivate'
+                      ) : (
+                        'Activate'
+                      )}
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={5} className="py-12 text-center">
+                <TableCell colSpan={7} className="py-12 text-center">
                   No premium entries found
                 </TableCell>
               </TableRow>
@@ -243,6 +325,40 @@ export default function ManagePremiumTable() {
           </PaginationContent>
         </Pagination>
       )}
+
+      <Dialog
+        open={confirmDialog.isOpen}
+        onOpenChange={(open) => !open && setConfirmDialog({ isOpen: false, id: 0, active: false })}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Confirm {confirmDialog.active ? 'Activate' : 'Deactivate'}</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to {confirmDialog.active ? 'activate' : 'deactivate'} this premium subscription?
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setConfirmDialog({ isOpen: false, id: 0, active: false })}>
+              Cancel
+            </Button>
+            <Button
+              variant={confirmDialog.active ? 'default' : 'destructive'}
+              onClick={confirmToggle}
+              disabled={isToggling !== null}
+            >
+              {isToggling !== null ? (
+                <>
+                  <Spinner className="mr-2 h-4 w-4" /> Processing...
+                </>
+              ) : confirmDialog.active ? (
+                'Activate'
+              ) : (
+                'Deactivate'
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

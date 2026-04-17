@@ -85,7 +85,6 @@ export async function premiumListAndSearchAction({
   page = '1',
   userMail,
 }: premiumListAndActionRequest['query']) {
-  console.log('🚀 ~ premiumListAndSearchAction ~ active :- ', active);
   await new Promise((resolve) => setTimeout(resolve, 2000));
   const token = (await cookies()).get('token')?.value;
   try {
@@ -107,6 +106,31 @@ export async function premiumListAndSearchAction({
     const data = await response.json();
 
     if (!data.success || !data.data) return null;
+    return data;
+  } catch (error) {
+    return null;
+  }
+}
+
+export async function togglePremiumStatusAction(id: number, active: boolean) {
+  const token = (await cookies()).get('token')?.value;
+  try {
+    const response = await honoClient.api.v1.admin.premium.$put(
+      {
+        json: {
+          id,
+          active,
+        },
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    const data = await response.json();
+
     return data;
   } catch (error) {
     return null;
