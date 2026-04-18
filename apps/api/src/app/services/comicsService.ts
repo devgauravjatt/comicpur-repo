@@ -130,7 +130,7 @@ export const ComicsService = {
 		const offset = ITEMS_PER_PAGE * (page - 1);
 
 		if (search) {
-			const condition = sql`${comicsTable.title} LIKE ${`%${search}%`}`;
+			const condition = sql`to_tsvector('english', ${comicsTable.title}) @@ phraseto_tsquery('english', ${search})`;
 
 			const data = await db
 				.select()

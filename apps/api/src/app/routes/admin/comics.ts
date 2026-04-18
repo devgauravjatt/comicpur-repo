@@ -1,5 +1,4 @@
 import { Hono } from 'hono';
-import z from 'zod';
 import { addComicBodySchema, updateComicBodySchema } from '@/app/schema/validate/req.js';
 import { ComicsService } from '@/app/services/comicsService.js';
 import isPgError from '@/lib/pgError.js';
@@ -49,25 +48,6 @@ const comicsRouter = new Hono<{ Variables: Variables }>()
 		}
 
 		return c.json({ success: true, message: 'Comic deleted successfully' });
-	})
-
-	// comics for admin tabale with pagination
-	.get(
-		'/list',
-		reqValidator(
-			'query',
-			z.object({
-				search: z.string().optional(),
-				page: z.coerce.number(),
-			}),
-		),
-		async (c) => {
-			const { search, page } = c.req.valid('query');
-
-			const data = await ComicsService.comicsListAndSearch(page, search);
-
-			return c.json({ success: true, data: data });
-		},
-	);
+	});
 
 export default comicsRouter;

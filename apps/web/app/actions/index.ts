@@ -53,7 +53,7 @@ export async function comicsListAndSearchAction(page: number = 1, search?: strin
   await new Promise((resolve) => setTimeout(resolve, 2000));
   const token = (await cookies()).get('token')?.value;
   try {
-    const response = await honoClient.api.v1.admin.comics.list.$get(
+    const response = await honoClient.api.v1.public.comics.list.$get(
       {
         query: {
           search,

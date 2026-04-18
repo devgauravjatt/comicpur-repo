@@ -30,6 +30,24 @@ const comicsRouter = new Hono<{ Variables: Variables }>()
 
 		const data = await ComicsService.getComicsBySlug(slug);
 		return c.json({ success: true, data });
-	});
+	})
+	// comics for admin tabale with pagination
+	.get(
+		'/list',
+		reqValidator(
+			'query',
+			z.object({
+				search: z.string().optional(),
+				page: z.coerce.number(),
+			}),
+		),
+		async (c) => {
+			const { search, page } = c.req.valid('query');
+
+			const data = await ComicsService.comicsListAndSearch(page, search);
+
+			return c.json({ success: true, data: data });
+		},
+	);
 
 export default comicsRouter;
