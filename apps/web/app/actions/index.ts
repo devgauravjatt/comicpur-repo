@@ -310,6 +310,31 @@ export async function createComicAction(req: createComicActionBody) {
   }
 }
 
+const createPremiumPost = honoClient.api.v1.admin.premium.$post;
+export type createPremiumActionBody = InferRequestType<typeof createPremiumPost>['json'];
+
+export async function createPremiumAction(req: createPremiumActionBody) {
+  const token = (await cookies()).get('token')?.value;
+  try {
+    const response = await honoClient.api.v1.admin.premium.$post(
+      {
+        json: req,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    return null;
+  }
+}
+
 export async function translateComicTitleAction(comicTitle: string) {
   try {
     const res = await translate(comicTitle, { from: 'en', to: 'hi' });
