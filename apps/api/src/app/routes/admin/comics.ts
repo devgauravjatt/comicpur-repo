@@ -27,6 +27,7 @@ const comicsRouter = new Hono<{ Variables: Variables }>()
 			if (isPgError.code(err, '23505')) {
 				return c.json({ success: false, error: 'Comic with this slug already exist' }, 400);
 			}
+			throw err;
 		}
 		return c.json({ success: true, message: 'Comic updated successfully' });
 	})
@@ -45,6 +46,7 @@ const comicsRouter = new Hono<{ Variables: Variables }>()
 			if (isPgError.code(error, '23503')) {
 				return c.json({ success: false, error: 'Comic is associated with chapters' }, 400);
 			}
+			throw error;
 		}
 
 		return c.json({ success: true, message: 'Comic deleted successfully' });

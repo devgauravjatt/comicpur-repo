@@ -1,14 +1,14 @@
 import { defineConfig } from 'tsdown';
 
 export default defineConfig({
-	entry: ['src/app.ts'],
+	entry: ['src/index.ts'],
 	platform: 'node',
 	format: ['es'],
 	outDir: 'build',
 	clean: true,
 	dts: true,
-	unbundle: false,
+	unbundle: true,
 	deps: {
-		skipNodeModulesBundle: false,
+		skipNodeModulesBundle: true,
 	},
 });
