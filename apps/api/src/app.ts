@@ -2,7 +2,7 @@ import 'dotenv/config';
 import { serve } from '@hono/node-server';
 import app from '@/routes.js';
 import checkEnv from './config/check-env.js';
-import appEnv from './config/env.js';
+import appEnv, { isDevelopment } from './config/env.js';
 
 // check environment variables with zod
 checkEnv();
@@ -13,7 +13,9 @@ serve(
 		port: appEnv.PORT,
 	},
 	(info) => {
-		console.info(`Server is running on http://localhost:${info.port}`);
+		if (isDevelopment) {
+			console.info(`Server is running on http://localhost:${info.port}`);
+		}
 	},
 );
 

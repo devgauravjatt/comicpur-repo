@@ -2,12 +2,12 @@ import { Hono } from 'hono';
 import { HTTPException } from 'hono/http-exception';
 import { poweredBy } from 'hono/powered-by';
 import appRouter from '@/app/routes/routes.js';
-import { HonoLogger } from './app/middleware/logger.js';
+import { devMiddleware } from './app/middleware/dev.js';
 import errorCatch from './lib/errorCatch.js';
 
 const app = new Hono()
 	.use(poweredBy())
-	.use(HonoLogger())
+	.use(devMiddleware)
 
 	.get('/', (c) => {
 		return c.json({ success: true, apiVersion: 'v1', path: '/api/v1' });

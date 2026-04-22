@@ -13,4 +13,7 @@ const appEnv = {
 	ADMIN_IDS: process.env.ADMIN_IDS.split(',').map(Number),
 };
 
+export const isProduction = appEnv.NODE_ENV === 'production';
+export const isDevelopment = appEnv.NODE_ENV === 'development';
+
 export default appEnv;
