@@ -41,6 +41,9 @@ importers:
       '@types/pg':
         specifier: ^8.20.0
         version: 8.20.0
+      dotenv:
+        specifier: ^17.4.1
+        version: 17.4.1
       drizzle-orm:
         specifier: ^0.45.2
         version: 0.45.2(@neondatabase/serverless@1.0.2)(@opentelemetry/api@1.9.1)(@types/pg@8.20.0)(pg@8.20.0)
@@ -53,6 +56,9 @@ importers:
       pg:
         specifier: ^8.20.0
         version: 8.20.0
+      rslog:
+        specifier: ^2.1.1
+        version: 2.1.1
       tsdown:
         specifier: ^0.21.7
         version: 0.21.7(typescript@5.9.3)
@@ -69,15 +75,9 @@ importers:
       '@types/node':
         specifier: ^20.19.39
         version: 20.19.39
-      dotenv:
-        specifier: ^17.4.1
-        version: 17.4.1
       drizzle-kit:
         specifier: ^0.31.10
         version: 0.31.10
-      rslog:
-        specifier: ^2.1.1
-        version: 2.1.1
       tsx:
         specifier: ^4.21.0
         version: 4.21.0

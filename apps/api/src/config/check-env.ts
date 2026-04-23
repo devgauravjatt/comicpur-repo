@@ -15,22 +15,23 @@ const envSchema = z.object({
 });
 
 function checkEnv() {
-	const parsed = envSchema.safeParse({
-		NODE_ENV: appEnv.NODE_ENV,
-		PORT: appEnv.PORT,
-		DATABASE_URL: appEnv.DATABASE_URL,
-		JWT_SECRET: appEnv.JWT_SECRET,
-		GOOGLE_CLIENT_ID: appEnv.GOOGLE_CLIENT_ID,
-		GOOGLE_CLIENT_SECRET: appEnv.GOOGLE_CLIENT_SECRET,
-		GOOGLE_REDIRECT_URI: appEnv.GOOGLE_REDIRECT_URI,
-		JWT_TIME: appEnv.JWT_TIME,
-		FRONTEND_REDIRECT_URL: appEnv.FRONTEND_REDIRECT_URL,
-		ADMIN_IDS: appEnv.ADMIN_IDS,
-	});
-
-	if (!parsed.success) {
+	try {
+		envSchema.parse({
+			NODE_ENV: appEnv.NODE_ENV,
+			PORT: appEnv.PORT,
+			DATABASE_URL: appEnv.DATABASE_URL,
+			JWT_SECRET: appEnv.JWT_SECRET,
+			GOOGLE_CLIENT_ID: appEnv.GOOGLE_CLIENT_ID,
+			GOOGLE_CLIENT_SECRET: appEnv.GOOGLE_CLIENT_SECRET,
+			GOOGLE_REDIRECT_URI: appEnv.GOOGLE_REDIRECT_URI,
+			JWT_TIME: appEnv.JWT_TIME,
+			FRONTEND_REDIRECT_URL: appEnv.FRONTEND_REDIRECT_URL,
+			ADMIN_IDS: appEnv.ADMIN_IDS,
+		});
+	} catch (error) {
 		console.error('❌ Invalid environment variables');
-		console.error(parsed.error.format());
+		console.error(error);
+		process.exit(1);
 	}
 }
 

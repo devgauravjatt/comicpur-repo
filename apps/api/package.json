@@ -2,11 +2,11 @@
 	"name": "api",
 	"type": "module",
 	"scripts": {
-		"dev": "tsx --watch src/app.ts",
+		"dev": "tsx --watch src/index.ts",
 		"lint": "biome check .",
 		"format": "biome format --write .",
 		"build": "tsdown",
-		"start": "node build/app.mjs"
+		"start": "node build/index.mjs"
 	},
 	"dependencies": {
 		"@hono/node-server": "^1.19.13",
