@@ -44,7 +44,7 @@ const chaptersReadRouter = new Hono<{ Variables: Variables }>().get(
 			});
 		}
 
-		const limit = await readLimitService.checkLimitAndRead(userId, chap);
+		const limit = await readLimitService.checkLimitAndRead(userId, chapter.id);
 
 		if (limit.allowed) {
 			return c.json({
