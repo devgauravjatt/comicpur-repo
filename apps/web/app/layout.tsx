@@ -12,9 +12,13 @@ import { cookies } from 'next/headers';
 import { Suspense } from 'react';
 import { FloatingContact } from '@/components/FloatingContact';
 import NextTopLoader from 'nextjs-toploader';
+import type { Viewport } from 'next';
+
+export const viewport: Viewport = {
+  themeColor: '#091b31',
+};
 
 export const metadata: Metadata = {
-  themeColor: '#091b31',
   title: siteConfig.meta.title,
   description: siteConfig.meta.description,
   keywords: siteConfig.meta.keywords,

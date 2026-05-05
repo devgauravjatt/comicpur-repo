@@ -172,3 +172,29 @@ body {
     box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
   }
 }
+
+body {
+  --sb-track-color: #150c2f;
+  --sb-thumb-color: #0015a5;
+  --sb-size: 10px;
+}
+
+::-webkit-scrollbar {
+  width: var(--sb-size);
+}
+
+::-webkit-scrollbar-track {
+  background: var(--sb-track-color);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
+  border-radius: 3px;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  body {
+    scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+  }
+}

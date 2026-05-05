@@ -8,7 +8,6 @@ import { Search, X } from 'lucide-react';
 import dayjs from 'dayjs';
 import useComicsTableStore from '@/stateStore/comicsTable';
 import { Spinner } from '@/components/ui/spinner';
-import { Card, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Pagination,
   PaginationContent,
@@ -112,72 +111,16 @@ export default function ComicsTable() {
         </Link>
       </div>
 
-      {/* Mobile: Card View / Desktop: Table View */}
-      <div className="space-y-4">
-        {/* Mobile View */}
-        <div className="grid grid-cols-1 gap-4 md:hidden">
-          {isLoading ? (
-            <div className="bg-background flex flex-col items-center justify-center gap-2 rounded-2xl border py-12">
-              <Spinner className="text-primary size-8" />
-              <p className="text-muted-foreground text-sm">Loading comics...</p>
-            </div>
-          ) : comics.length > 0 ? (
-            comics.map((comic) => (
-              <Card key={comic.id} className="overflow-hidden rounded-2xl border">
-                <CardHeader className="space-y-2 p-4 pb-3">
-                  <div className="flex items-start justify-between gap-2">
-                    <CardTitle className="line-clamp-2 text-base font-semibold">{comic.title}</CardTitle>
-                    <span
-                      className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${comic.published ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}
-                    >
-                      {comic.published ? 'Published' : 'Draft'}
-                    </span>
-                  </div>
-                  <div className="text-muted-foreground flex items-center gap-3 text-xs">
-                    <span>{dayjs(comic.createdAt).format('MMM DD, YYYY')}</span>
-                    <span className="bg-muted-foreground/40 h-1 w-1 rounded-full" />
-                    <span className="tracking-wider uppercase">{comic.languageCode}</span>
-                    {comic.isAdult && (
-                      <>
-                        <span className="bg-muted-foreground/40 h-1 w-1 rounded-full" />
-                        <span className="font-medium text-rose-600 dark:text-rose-400">18+</span>
-                      </>
-                    )}
-                  </div>
-                </CardHeader>
-                <CardFooter className="flex flex-wrap gap-3 p-4 pt-2">
-                  <Link href={`/admin/create/chapter/${comic.slug}`} className="flex-1">
-                    <Button size="sm" variant="secondary" className="h-11 w-full rounded-xl px-4">
-                      Add Chapter
-                    </Button>
-                  </Link>
-                  <Link href={`/admin/chapters/${comic.slug}`} className="flex-1">
-                    <Button size="sm" variant="outline" className="h-11 w-full rounded-xl px-4">
-                      Manage Chapter
-                    </Button>
-                  </Link>
-                  <Link href={`/admin/update/comic/${comic.slug}`} className="w-full">
-                    <Button size="sm" variant="default" className="mt-1 h-11 w-full rounded-xl px-4">
-                      Edit
-                    </Button>
-                  </Link>
-                </CardFooter>
-              </Card>
-            ))
-          ) : (
-            <div className="bg-background rounded-2xl border py-12 text-center">No comics found</div>
-          )}
-        </div>
-
-        {/* Desktop View */}
-        <div className="bg-background hidden overflow-hidden rounded-2xl border md:block">
+      {/* Comics Table */}
+      <div className="bg-background overflow-hidden rounded-2xl border">
+        <div className="overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow className="hover:bg-transparent">
-                <TableHead className="w-[50%]">Title</TableHead>
+                <TableHead className="w-[40%]">Title</TableHead>
                 <TableHead>Is Published</TableHead>
-                <TableHead>Language Code</TableHead>
-                <TableHead>Adult Content</TableHead>
+                <TableHead>Language</TableHead>
+                <TableHead>Adult</TableHead>
                 <TableHead>Date</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
@@ -197,8 +140,11 @@ export default function ComicsTable() {
                   <TableRow key={comic.id} className="group">
                     <TableCell className="font-medium">{comic.title}</TableCell>
                     <TableCell className="text-muted-foreground">{comic.published ? 'Yes' : 'No'}</TableCell>
-                    <TableCell className="text-muted-foreground">{comic.languageCode}</TableCell>
+                    <TableCell className="text-muted-foreground uppercase">{comic.languageCode}</TableCell>
                     <TableCell className="text-muted-foreground">{comic.isAdult ? 'Yes' : 'No'}</TableCell>
+                    <TableCell className="text-muted-foreground whitespace-nowrap">
+                      {dayjs(comic.createdAt).format('MMM DD, YYYY')}
+                    </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
                         <Link href={`/admin/create/chapter/${comic.slug}`}>
@@ -222,7 +168,7 @@ export default function ComicsTable() {
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={3} className="py-12 text-center">
+                  <TableCell colSpan={6} className="py-12 text-center">
                     No comics found
                   </TableCell>
                 </TableRow>

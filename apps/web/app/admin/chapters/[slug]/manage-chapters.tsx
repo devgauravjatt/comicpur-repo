@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import useChaptersTableStore from '@/stateStore/chaptersTable';
 import { Spinner } from '@/components/ui/spinner';
-import { Card, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Pagination,
   PaginationContent,
@@ -108,101 +107,61 @@ export default function ManageChaptersTable({ comic_id, comic_slug }: { comic_id
 
   return (
     <div className="space-y-6 px-4 pb-10 md:px-0">
-      {/* Mobile: Card View */}
-      <div className="grid grid-cols-1 gap-4 md:hidden">
-        {isLoading ? (
-          <div className="bg-background flex flex-col items-center justify-center gap-2 rounded-2xl border py-12">
-            <Spinner className="text-primary size-8" />
-            <p className="text-muted-foreground text-sm">Loading chapters...</p>
-          </div>
-        ) : chapters.length > 0 ? (
-          chapters.map((chapter) => (
-            <Card key={chapter.id} className="overflow-hidden rounded-2xl border">
-              <CardHeader className="space-y-2 p-4 pb-3">
-                <div className="flex items-start justify-between gap-2">
-                  <CardTitle className="line-clamp-2 text-base font-semibold">{chapter.title}</CardTitle>
-                  <span className="text-muted-foreground rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-medium dark:bg-gray-800">
-                    #{chapter.chapterNumber}
-                  </span>
-                </div>
-              </CardHeader>
-              <CardFooter className="flex flex-wrap gap-3 p-4 pt-2">
-                <Link href={`/comic/${comic_slug}/${chapter.chapterNumber}`} className="flex-1">
-                  <Button size="sm" variant="secondary" className="h-11 w-full rounded-xl px-4">
-                    Show
-                  </Button>
-                </Link>
-
-                <Button
-                  size="sm"
-                  variant="destructive"
-                  className="mt-1 h-11 w-full rounded-xl px-4"
-                  onClick={() => handleDeleteClick(chapter.id)}
-                >
-                  Delete
-                </Button>
-              </CardFooter>
-            </Card>
-          ))
-        ) : (
-          <div className="bg-background rounded-2xl border py-12 text-center">No chapters found</div>
-        )}
-      </div>
-
-      {/* Desktop: Table View */}
-      <div className="bg-background hidden overflow-hidden rounded-2xl border md:block">
-        <Table>
-          <TableHeader>
-            <TableRow className="hover:bg-transparent">
-              <TableHead className="w-[40%]">Title</TableHead>
-              <TableHead>Chapter No.</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {isLoading ? (
-              <TableRow>
-                <TableCell colSpan={3} className="py-12 text-center">
-                  <div className="flex flex-col items-center gap-2">
-                    <Spinner className="text-primary size-8" />
-                    <p className="text-muted-foreground text-sm">Loading chapters...</p>
-                  </div>
-                </TableCell>
+      <div className="bg-background overflow-hidden rounded-2xl border">
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow className="hover:bg-transparent">
+                <TableHead className="w-[40%]">Title</TableHead>
+                <TableHead>Chapter No.</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
               </TableRow>
-            ) : chapters.length > 0 ? (
-              chapters.map((chapter) => (
-                <TableRow key={chapter.id} className="group">
-                  <TableCell className="font-medium">{chapter.title}</TableCell>
-                  <TableCell className="text-muted-foreground">#{chapter.chapterNumber}</TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex justify-end gap-2">
-                      <Link href={`/comic/${comic_slug}/${chapter.chapterNumber}`}>
-                        <Button size="sm" variant="secondary" className="h-9 rounded-lg px-4">
-                          Show
-                        </Button>
-                      </Link>
-
-                      <Button
-                        size="sm"
-                        variant="destructive"
-                        className="h-9 rounded-lg px-4"
-                        onClick={() => handleDeleteClick(chapter.id)}
-                      >
-                        Delete
-                      </Button>
+            </TableHeader>
+            <TableBody>
+              {isLoading ? (
+                <TableRow>
+                  <TableCell colSpan={3} className="py-12 text-center">
+                    <div className="flex flex-col items-center gap-2">
+                      <Spinner className="text-primary size-8" />
+                      <p className="text-muted-foreground text-sm">Loading chapters...</p>
                     </div>
                   </TableCell>
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={3} className="py-12 text-center">
-                  No chapters found
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              ) : chapters.length > 0 ? (
+                chapters.map((chapter) => (
+                  <TableRow key={chapter.id} className="group">
+                    <TableCell className="font-medium">{chapter.title}</TableCell>
+                    <TableCell className="text-muted-foreground">#{chapter.chapterNumber}</TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex justify-end gap-2">
+                        <Link href={`/comic/${comic_slug}/${chapter.chapterNumber}`}>
+                          <Button size="sm" variant="secondary" className="h-9 rounded-lg px-4">
+                            Show
+                          </Button>
+                        </Link>
+
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          className="h-9 rounded-lg px-4"
+                          onClick={() => handleDeleteClick(chapter.id)}
+                        >
+                          Delete
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={3} className="py-12 text-center">
+                    No chapters found
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
       </div>
 
       {/* Pagination */}
