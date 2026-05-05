@@ -27,9 +27,9 @@ export async function GET(request: Request) {
     value: token,
     name: 'token',
     path: '/',
-    secure: false,
-    httpOnly: false,
-    expires: undefined,
+    secure: true,
+    httpOnly: true,
+    expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
   });
 
   return response;
