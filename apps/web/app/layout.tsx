@@ -11,6 +11,7 @@ import { siteConfig } from '@/lib/site-config';
 import { cookies } from 'next/headers';
 import { Suspense } from 'react';
 import { FloatingContact } from '@/components/FloatingContact';
+import NextTopLoader from 'nextjs-toploader';
 
 export const metadata: Metadata = {
   title: siteConfig.meta.title,
@@ -88,6 +89,7 @@ export default function RootLayout({
             <Suspense fallback={<Header user={null} />}>
               <HeaderWithUser />
             </Suspense>
+            <NextTopLoader />
             <main className="mx-auto size-full max-w-7xl flex-1 px-4 py-6 sm:px-6">
               <div className="h-full">{children}</div>
             </main>
