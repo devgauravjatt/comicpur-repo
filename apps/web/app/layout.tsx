@@ -14,6 +14,7 @@ import { FloatingContact } from '@/components/FloatingContact';
 import NextTopLoader from 'nextjs-toploader';
 
 export const metadata: Metadata = {
+  themeColor: '#091b31',
   title: siteConfig.meta.title,
   description: siteConfig.meta.description,
   keywords: siteConfig.meta.keywords,
@@ -89,7 +90,7 @@ export default function RootLayout({
             <Suspense fallback={<Header user={null} />}>
               <HeaderWithUser />
             </Suspense>
-            <NextTopLoader />
+            <NextTopLoader height={12} />
             <main className="mx-auto size-full max-w-7xl flex-1 px-4 py-6 sm:px-6">
               <div className="h-full">{children}</div>
             </main>
