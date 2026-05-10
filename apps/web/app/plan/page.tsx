@@ -35,7 +35,7 @@ export default function PlanPage() {
         {/* Free Plan */}
         <Card className="border-border hover:border-muted-foreground/20 relative overflow-hidden transition-all">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">Free Plan</CardTitle>
+            <CardTitle className="flex items-center gap-2">{siteConfig.freePlanName} Plan</CardTitle>
             <CardDescription>Perfect for casual readers</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -77,7 +77,7 @@ export default function PlanPage() {
             <div className="flex items-center justify-between pt-2">
               <CardTitle className="flex items-center gap-2">
                 <Zap className="fill-primary text-primary size-5" />
-                Pro Plan
+                {siteConfig.proPlanName} Plan
               </CardTitle>
               <Badge className="bg-primary/10 text-primary hover:bg-primary/20 border-none">UNLIMITED</Badge>
             </div>
@@ -85,7 +85,7 @@ export default function PlanPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-baseline gap-1">
-              <span className="text-3xl font-bold">₹99</span>
+              <span className="text-3xl font-bold">₹{siteConfig.proPlanPrice}</span>
               <span className="text-muted-foreground text-sm">/ month</span>
             </div>
             <ul className="space-y-2.5 text-sm">

@@ -10,13 +10,16 @@ const meta = {
 
 const contact = {
   email: 'contact@comicpur.com',
-  phone: '+1234567890',
-  telegram: 'https://t.me/yourtelegramhandle',
-  whatsapp: 'https://wa.me/yourwhatsapplink',
+  phone: '+919914610704',
+  telegram: 'https://t.me/Vanitas_VT',
+  whatsapp: 'https://wa.me/919914610704',
 };
 
 export const siteConfig = {
   meta,
   contact,
   languageCodes: ['hi', 'en'],
+  proPlanPrice: 49,
+  proPlanName: 'Pro',
+  freePlanName: 'Free',
 };
