@@ -7,6 +7,7 @@ import categoriesRouter from './categories.js';
 import chaptersRouter from './chapters.js';
 import comicsRouter from './comics.js';
 import premiumRouter from './premium.js';
+import statusRouter from './status.js';
 
 const adminRouter = new Hono<{ Variables: Variables }>()
 	.use(adminAuthMiddleware)
@@ -14,6 +15,7 @@ const adminRouter = new Hono<{ Variables: Variables }>()
 	.route('/categories', categoriesRouter)
 	.route('/chapters', chaptersRouter)
 	.route('/premium', premiumRouter)
+	.route('/status', statusRouter)
 	.get('/check', async (c) => {
 		const userId = c.get('user').userId;
 		const admins = appEnv.ADMIN_IDS;
