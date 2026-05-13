@@ -196,7 +196,7 @@ export default function ManagePremiumTable() {
                         variant={premium.active ? 'destructive' : 'default'}
                         size="sm"
                         onClick={() => handleToggleClick(premium.id, !premium.active)}
-                        disabled={isToggling === premium.id}
+                        disabled={isToggling === premium.id || new Date(premium.expiryDate) < new Date()}
                         className="h-9 rounded-lg px-4"
                       >
                         {isToggling === premium.id ? (
